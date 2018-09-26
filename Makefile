@@ -11,9 +11,9 @@ WEBUI_ADMIN_PASSWD ?= admin
 _BUILD_DIR = ./.build
 
 define fetch_version
-	curl --silent "https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=$(1)" \
-		| grep "^pkgver=" \
-		| grep -Po "\d+\.\d+[^\"']*"
+$(shell curl --silent "https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=$(1)" \
+	| grep "^pkgver=" \
+	| grep -Po "\d+\.\d+[^\"']*")
 endef
 
 
@@ -41,8 +41,8 @@ _pikvm: $(_BUILD_DIR)
 	cp -a platforms/$(PIKVM_PLATFORM) $(_BUILD_DIR)/stages/pikvm-$(PIKVM_PLATFORM)
 	cd $(_BUILD_DIR) && make binfmt && make _rpi \
 		BUILD_OPTS=" $(BUILD_OPTS) \
-			--build-arg USTREAMER_VERSION=$(call fetch_version, ustreamer) \
-			--build-arg KVMD_VERSION=$(call fetch_version, kvmd) \
+			--build-arg USTREAMER_VERSION=$(call fetch_version,ustreamer) \
+			--build-arg KVMD_VERSION=$(call fetch_version,kvmd) \
 			--build-arg NEW_SSH_KEYGEN=$(shell uuidgen) \
 			--build-arg WEBUI_ADMIN_PASSWD='$(WEBUI_ADMIN_PASSWD)' \
 			--build-arg NEW_HTTPS_CERT=$(shell uuidgen) \
