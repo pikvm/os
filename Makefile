@@ -37,7 +37,8 @@ shell:
 _pikvm: $(_BUILD_DIR)
 	rm -rf $(_BUILD_DIR)/stages/pikvm-*
 	rm -rf $(_BUILD_DIR)/builder/scripts/pikvm
-	cp -a platforms/common $(_BUILD_DIR)/stages/pikvm-common
+	cp -a platforms/common-init $(_BUILD_DIR)/stages/pikvm-common-init
+	cp -a platforms/common-final $(_BUILD_DIR)/stages/pikvm-common-final
 	cp -a platforms/$(PIKVM_PLATFORM) $(_BUILD_DIR)/stages/pikvm-$(PIKVM_PLATFORM)
 	cd $(_BUILD_DIR) && make binfmt && make _rpi \
 		BUILD_OPTS=" $(BUILD_OPTS) \
@@ -49,7 +50,7 @@ _pikvm: $(_BUILD_DIR)
 		" \
 		PROJECT=pikvm \
 		BOARD=$(PI_BOARD) \
-		STAGES="__init__ os watchdog ro pikvm-common pikvm-$(PIKVM_PLATFORM) rootssh __cleanup__" \
+		STAGES="__init__ os watchdog ro pikvm-common-init pikvm-$(PIKVM_PLATFORM) pikvm-common-final rootssh __cleanup__" \
 		LOCALE=$(LOCALE) \
 		TIMEZONE=$(TIMEZONE)
 

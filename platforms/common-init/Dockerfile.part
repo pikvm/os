@@ -1,0 +1,35 @@
+RUN pkg-install \
+	nginx-mainline \
+	apache-tools \
+	raspberrypi-firmware \
+	v4l-utils \
+	python \
+	python-raspberry-gpio \
+	customizepkg
+RUN systemctl enable nginx
+
+COPY stages/pikvm-common-init/customizepkg.nginx /etc/customizepkg.d/nginx-mainline-mod-ndk
+COPY stages/pikvm-common-init/customizepkg.nginx /etc/customizepkg.d/nginx-mainline-mod-lua
+RUN env MAKEPKGOPTS="--skipchecksums --skippgpcheck" pkg-install nginx-mainline-mod-lua
+
+ARG USTREAMER_VERSION
+ENV USTREAMER_VERSION $USTREAMER_VERSION
+RUN echo $USTREAMER_VERSION
+RUN pkg-install ustreamer
+
+ARG KVMD_VERSION
+ENV KVMD_VERSION $KVMD_VERSION
+RUN echo $KVMD_VERSION
+RUN pkg-install kvmd
+RUN systemctl enable kvmd
+
+COPY stages/pikvm-common-init/sysctl.conf /etc/sysctl.d/99-pikvm.conf
+COPY stages/pikvm-common-init/motd /etc/
+
+RUN sed -i -e "s/console=ttyAMA0\,115200//g" /boot/cmdline.txt \
+	&& sed -i -e "s/kgdboc=ttyAMA0\,115200//g" /boot/cmdline.txt
+RUN systemctl mask serial-getty@ttyAMA0.service
+
+RUN rm -rf /etc/nginx/* \
+	&& cp /usr/share/kvmd/configs/nginx/* /etc/nginx/ \
+	&& sed -i -e "s/^#PROD//g" /etc/nginx/nginx.conf
