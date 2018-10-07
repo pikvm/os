@@ -1,0 +1,4 @@
+COPY stages/pikvm-v1-vga/config.txt /boot/
+COPY stages/pikvm-v1-vga/udev.rules /etc/udev/rules.d/pikvm.rules
+
+RUN cp /usr/share/kvmd/configs/kvmd/v1-vga.yaml /etc/kvmd.yaml
