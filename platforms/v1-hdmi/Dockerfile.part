@@ -5,6 +5,7 @@ RUN pkg-install \
 RUN sed -i -e "s/rootwait/cma=128M rootwait/g" /boot/cmdline.txt
 
 COPY stages/pikvm-v1-hdmi/config.txt /boot/
+RUN [ "$BOARD" == "rpi-3" ] && sed -i -e 's/,i2c_pins_28_29=1//g' /boot/config.txt || true
 COPY stages/pikvm-v1-hdmi/udev.rules /etc/udev/rules.d/pikvm.rules
 COPY stages/pikvm-v1-hdmi/modules.load /etc/modules-load.d/pikvm.conf
 

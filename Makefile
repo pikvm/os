@@ -27,10 +27,12 @@ all:
 
 v1-rpi2-vga:
 	make _pikvm BOARD=rpi-2 PLATFORM=v1-vga
-
-
 v1-rpi2-hdmi:
 	make _pikvm BOARD=rpi-2 PLATFORM=v1-hdmi
+v1-rpi3-vga:
+	make _pikvm BOARD=rpi-3 PLATFORM=v1-vga
+v1-rpi3-hdmi:
+	make _pikvm BOARD=rpi-3 PLATFORM=v1-hdmi
 
 
 shell:
