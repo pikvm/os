@@ -1,3 +1,6 @@
+# See /boot/overlays/README for all available options
+initramfs initramfs-linux.img followkernel
+
 gpu_mem=512
 start_x=1
 enable_uart=1
