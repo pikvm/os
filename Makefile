@@ -1,4 +1,4 @@
-BOARD ?= rpi-2
+BOARD ?= rpi2
 PLATFORM ?= v1-vga
 
 BUILD_OPTS ?=
@@ -25,14 +25,14 @@ all:
 	@ cat Makefile
 
 
-v1-rpi2-vga:
-	make _pikvm BOARD=rpi-2 PLATFORM=v1-vga
-v1-rpi2-hdmi:
-	make _pikvm BOARD=rpi-2 PLATFORM=v1-hdmi
-v1-rpi3-vga:
-	make _pikvm BOARD=rpi-3 PLATFORM=v1-vga
-v1-rpi3-hdmi:
-	make _pikvm BOARD=rpi-3 PLATFORM=v1-hdmi
+v1-vga-rpi2:
+	make _pikvm BOARD=rpi2 PLATFORM=v1-vga
+v1-hdmi-rpi2:
+	make _pikvm BOARD=rpi2 PLATFORM=v1-hdmi
+v1-vga-rpi3:
+	make _pikvm BOARD=rpi3 PLATFORM=v1-vga
+v1-hdmi-rpi3:
+	make _pikvm BOARD=rpi3 PLATFORM=v1-hdmi
 
 
 shell:
@@ -45,7 +45,7 @@ _pikvm: $(_BUILD_DIR)
 	cp -a platforms/common-init $(_BUILD_DIR)/stages/pikvm-common-init
 	cp -a platforms/common-final $(_BUILD_DIR)/stages/pikvm-common-final
 	cp -a platforms/$(PLATFORM) $(_BUILD_DIR)/stages/pikvm-$(PLATFORM)
-	cd $(_BUILD_DIR) && make binfmt && make _rpi \
+	cd $(_BUILD_DIR) && make binfmt os \
 		BUILD_OPTS=" $(BUILD_OPTS) \
 			--build-arg USTREAMER_VERSION=$(call fetch_version,ustreamer) \
 			--build-arg KVMD_VERSION=$(call fetch_version,kvmd) \

@@ -2,5 +2,5 @@
 initramfs initramfs-linux.img followkernel
 
 gpu_mem=16
-dtparam=act_led_gpio=27
+dtparam=act_led_gpio=26
 enable_uart=1

@@ -5,8 +5,16 @@ RUN pkg-install \
 RUN sed -i -e "s/rootwait/cma=128M rootwait/g" /boot/cmdline.txt
 
 COPY stages/pikvm-v1-hdmi/config.txt /boot/
-RUN [ "$BOARD" == "rpi-3" ] && sed -i -e 's/,i2c_pins_28_29=1//g' /boot/config.txt || true
+RUN [ "$BOARD" == "rpi3" ] && ( \
+		sed -i -e 's/,i2c_pins_28_29=1//g' /boot/config.txt; \
+		echo "dtoverlay=pi3-disable-bt" >> /boot/config.txt; \
+	) || true
+
 COPY stages/pikvm-v1-hdmi/udev.rules /etc/udev/rules.d/pikvm.rules
+RUN [ "$BOARD" == "rpi3" ] && ( \
+		sed -i -e 's/KERNELS=="1-1\.4:1\.0"/KERNELS=="1-1.1.2:1.0"/g' /etc/udev/rules.d/pikvm.rules; \
+	) || true
+
 COPY stages/pikvm-v1-hdmi/modules.load /etc/modules-load.d/pikvm.conf
 
 RUN cp /usr/share/kvmd/configs/kvmd/v1-hdmi.yaml /etc/kvmd.yaml
