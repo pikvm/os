@@ -55,7 +55,7 @@ _pikvm: $(_BUILD_DIR)
 		" \
 		PROJECT=pikvm \
 		BOARD=$(BOARD) \
-		STAGES="__init__ os watchdog ro pikvm-common-init pikvm-$(PLATFORM) pikvm-common-final rootssh __cleanup__" \
+		STAGES="__init__ os watchdog ro pikvm-common-init pikvm-$(PLATFORM) pikvm-common-final rootssh sshkeygen __cleanup__" \
 		LOCALE=$(LOCALE) \
 		TIMEZONE=$(TIMEZONE)
 
