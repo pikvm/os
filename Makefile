@@ -4,7 +4,7 @@ CARD_ROOT ?= $(CARD)p2
 
 BOARD ?= rpi2
 PLATFORM ?= v1-vga
-STAGES ?= "__init__ os watchdog ro pikvm-common-init pikvm-$(PLATFORM) pikvm-common-final rootssh sshkeygen __cleanup__"
+STAGES ?= "__init__ os watchdog ro pikvm-common-init pikvm-$(PLATFORM) pikvm-common-final sshkeygen __cleanup__"
 
 BUILD_OPTS ?=
 

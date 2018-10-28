@@ -33,3 +33,7 @@ RUN systemctl mask serial-getty@ttyAMA0.service
 RUN rm -rf /etc/nginx/* \
 	&& cp /usr/share/kvmd/configs/nginx/* /etc/nginx/ \
 	&& sed -i -e "s/^#PROD//g" /etc/nginx/nginx.conf
+
+RUN userdel -r -f alarm \
+	&& echo "root:root" | chpasswd \
+	&& echo "PermitRootLogin yes" >> "/etc/ssh/sshd_config"
