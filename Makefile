@@ -66,7 +66,7 @@ _pikvm: $(_BUILD_DIR)
 			--build-arg USTREAMER_VERSION=$(call fetch_version,ustreamer) \
 			--build-arg KVMD_VERSION=$(call fetch_version,kvmd) \
 			--build-arg NEW_SSH_KEYGEN=$(shell uuidgen) \
-			--build-arg ROOT_PASSWD='$(ROOT_PASSWD)'
+			--build-arg ROOT_PASSWD='$(ROOT_PASSWD)' \
 			--build-arg WEBUI_ADMIN_PASSWD='$(WEBUI_ADMIN_PASSWD)' \
 			--build-arg NEW_HTTPS_CERT=$(shell uuidgen) \
 		" \
