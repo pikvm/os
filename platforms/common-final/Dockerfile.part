@@ -1,3 +1,10 @@
+RUN userdel -r -f alarm
+RUN "PermitRootLogin yes" >> /etc/ssh/sshd_config
+
+ARG ROOT_PASSWD
+ENV ROOT_PASSWD $ROOT_PASSWD
+RUN echo "root:$ROOT_PASSWD" | chpasswd
+
 ARG WEBUI_ADMIN_PASSWD
 ENV WEBUI_ADMIN_PASSWD $WEBUI_ADMIN_PASSWD
 RUN echo "$WEBUI_ADMIN_PASSWD" | htpasswd -ci /etc/nginx/htpasswd admin

@@ -4,7 +4,7 @@ CARD_ROOT ?= $(CARD)p2
 
 BOARD ?= rpi2
 PLATFORM ?= v1-vga
-STAGES ?= "__init__ os watchdog ro pikvm-common-init pikvm-$(PLATFORM) pikvm-common-final sshkeygen __cleanup__"
+STAGES ?= __init__ os watchdog ro pikvm-common-init pikvm-$(PLATFORM) pikvm-common-final sshkeygen __cleanup__
 
 BUILD_OPTS ?=
 
@@ -13,6 +13,7 @@ LOCALE ?= en_US.UTF-8
 TIMEZONE ?= Europe/Moscow
 REPO_URL ?= http://mirror.yandex.ru/archlinux-arm
 
+ROOT_PASSWD ?= root
 WEBUI_ADMIN_PASSWD ?= admin
 
 
@@ -28,8 +29,17 @@ endef
 
 # =====
 all:
-	@ cat Makefile
-
+	@ echo "Available commands:"
+	@ echo "    make                # Print this help"
+	@ echo "    make v1-vga-rpi2    # Build v1-vga-rpi2"
+	@ echo "    make v1-hdmi-rpi2   # Build v1-hdmi-rpi2"
+	@ echo "    make v1-vga-rpi3    # v1-vga-rpi3"
+	@ echo "    make v1-hdmi-rpi3   # v1-hdmi-rpi3"
+	@ echo "    make shell          # Run Arch-ARM shell"
+	@ echo "    make install        # Install rootfs to partitions on $(CARD)"
+	@ echo "    make scan           # Find all RPi devices in the local network"
+	@ echo "    make clean          # Remove the generated rootfs"
+	@ echo "    make clean          # Remove the generated rootfs and pi-builder toolchain"
 
 v1-vga-rpi2:
 	make _pikvm BOARD=rpi2 PLATFORM=v1-vga
@@ -56,12 +66,13 @@ _pikvm: $(_BUILD_DIR)
 			--build-arg USTREAMER_VERSION=$(call fetch_version,ustreamer) \
 			--build-arg KVMD_VERSION=$(call fetch_version,kvmd) \
 			--build-arg NEW_SSH_KEYGEN=$(shell uuidgen) \
+			--build-arg ROOT_PASSWD='$(ROOT_PASSWD)'
 			--build-arg WEBUI_ADMIN_PASSWD='$(WEBUI_ADMIN_PASSWD)' \
 			--build-arg NEW_HTTPS_CERT=$(shell uuidgen) \
 		" \
 		PROJECT=pikvm \
 		BOARD=$(BOARD) \
-		STAGES=$(STAGES) \
+		STAGES='$(STAGES)' \
 		LOCALE=$(LOCALE) \
 		TIMEZONE=$(TIMEZONE) \
 		REPO_URL=$(REPO_URL)
