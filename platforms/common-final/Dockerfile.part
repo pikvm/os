@@ -1,5 +1,5 @@
 RUN userdel -r -f alarm
-RUN "PermitRootLogin yes" >> /etc/ssh/sshd_config
+RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 
 ARG ROOT_PASSWD
 ENV ROOT_PASSWD $ROOT_PASSWD
