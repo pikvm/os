@@ -31,5 +31,5 @@ RUN sed -i -e "s/console=ttyAMA0\,115200//g" /boot/cmdline.txt \
 RUN systemctl mask serial-getty@ttyAMA0.service
 
 RUN rm -rf /etc/nginx/* \
-	&& cp /usr/share/kvmd/configs/nginx/* /etc/nginx/ \
+	&& cp -r /usr/share/kvmd/configs/nginx/* /etc/nginx/ \
 	&& sed -i -e "s/^#PROD//g" /etc/nginx/nginx.conf
