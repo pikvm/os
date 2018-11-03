@@ -9,4 +9,4 @@ RUN [ "$BOARD" == "rpi3" ] && ( \
 		sed -i -e 's/KERNELS=="1-1\.4:1\.0"/KERNELS=="1-1.1.2:1.0"/g' /etc/udev/rules.d/pikvm.rules; \
 	) || true
 
-RUN cp /usr/share/kvmd/configs/kvmd/v1-vga.yaml /etc/kvmd.yaml
+RUN cp /usr/share/kvmd/configs/kvmd/v1-vga.conf /etc/kvmd/kvmd.conf
