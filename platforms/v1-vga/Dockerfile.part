@@ -3,8 +3,8 @@ RUN [ "$BOARD" == "rpi3" ] && ( \
 		echo "dtoverlay=pi3-disable-bt" >> /boot/config.txt; \
 	) || true
 
-COPY stages/pikvm-v1-vga/udev.rules /etc/udev/rules.d/pikvm.rules
+COPY stages/pikvm-v1-vga/udev.rules /etc/udev/rules.d/99-pikvm.rules
 RUN [ "$BOARD" == "rpi3" ] && ( \
-		sed -i -e 's/KERNELS=="1-1\.3:1\.0"/KERNELS=="1-1.1.3:1.0"/g' /etc/udev/rules.d/pikvm.rules; \
-		sed -i -e 's/KERNELS=="1-1\.4:1\.0"/KERNELS=="1-1.1.2:1.0"/g' /etc/udev/rules.d/pikvm.rules; \
+		sed -i -e 's/KERNELS=="1-1\.3:1\.0"/KERNELS=="1-1.1.3:1.0"/g' /etc/udev/rules.d/99-pikvm.rules; \
+		sed -i -e 's/KERNELS=="1-1\.4:1\.0"/KERNELS=="1-1.1.2:1.0"/g' /etc/udev/rules.d/99-pikvm.rules; \
 	) || true

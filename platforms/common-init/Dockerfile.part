@@ -24,6 +24,10 @@ RUN echo $KVMD_VERSION
 RUN pkg-install kvmd
 RUN systemctl enable kvmd
 
+RUN groupadd -r gpio \
+	&& groupmems -g gpio -a kvmd \
+	&& groupmems -g uucp -a kvmd
+COPY stages/pikvm-common-init/gpio.udev.rules /etc/udev/rules.d/99-gpio.rules
 COPY stages/pikvm-common-init/sysctl.conf /etc/sysctl.d/99-pikvm.conf
 COPY stages/pikvm-common-init/motd /etc/
 
