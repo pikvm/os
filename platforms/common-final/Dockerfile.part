@@ -1,9 +1,12 @@
-RUN userdel -r -f alarm
-RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+ARG PLATFORM
+RUN cp /usr/share/kvmd/configs/kvmd/kvmd.$PLATFORM.yaml /etc/kvmd/kvmd.yaml \
+	&& cp /usr/share/kvmd/configs/kvmd/logging.yaml /etc/kvmd/
 
 ARG ROOT_PASSWD
 ENV ROOT_PASSWD $ROOT_PASSWD
 RUN echo "root:$ROOT_PASSWD" | chpasswd
+RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+RUN userdel -r -f alarm
 
 ARG WEBUI_ADMIN_PASSWD
 ENV WEBUI_ADMIN_PASSWD $WEBUI_ADMIN_PASSWD

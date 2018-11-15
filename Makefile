@@ -63,6 +63,7 @@ _pikvm: $(_BUILD_DIR)
 	cp -a platforms/$(PLATFORM) $(_BUILD_DIR)/stages/pikvm-$(PLATFORM)
 	cd $(_BUILD_DIR) && make binfmt os \
 		BUILD_OPTS=" $(BUILD_OPTS) \
+			--build-arg PLATFORM=$(PLATFORM) \
 			--build-arg USTREAMER_VERSION=$(call fetch_version,ustreamer) \
 			--build-arg KVMD_VERSION=$(call fetch_version,kvmd) \
 			--build-arg NEW_SSH_KEYGEN=$(shell uuidgen) \
