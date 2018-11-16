@@ -1,5 +1,5 @@
 ARG PLATFORM
-RUN cp /usr/share/kvmd/configs/kvmd/kvmd.$PLATFORM.yaml /etc/kvmd/kvmd.yaml \
+RUN cp /usr/share/kvmd/configs/kvmd/platforms/kvmd.$PLATFORM.yaml /etc/kvmd/kvmd.yaml \
 	&& cp /usr/share/kvmd/configs/kvmd/logging.yaml /etc/kvmd/
 
 ARG ROOT_PASSWD
