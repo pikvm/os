@@ -39,7 +39,7 @@ all:
 	@ echo "    make install        # Install rootfs to partitions on $(CARD)"
 	@ echo "    make scan           # Find all RPi devices in the local network"
 	@ echo "    make clean          # Remove the generated rootfs"
-	@ echo "    make clean          # Remove the generated rootfs and pi-builder toolchain"
+	@ echo "    make clean-all      # Remove the generated rootfs and pi-builder toolchain"
 
 v1-vga-rpi2:
 	make _pikvm BOARD=rpi2 PLATFORM=v1-vga
@@ -66,6 +66,7 @@ _pikvm: $(_BUILD_DIR)
 			--build-arg PLATFORM=$(PLATFORM) \
 			--build-arg USTREAMER_VERSION=$(call fetch_version,ustreamer) \
 			--build-arg KVMD_VERSION=$(call fetch_version,kvmd) \
+			--build-arg KVMD_WEBTERM_VERSION=$(call fetch_version,kvmd-webterm) \
 			--build-arg NEW_SSH_KEYGEN=$(shell uuidgen) \
 			--build-arg ROOT_PASSWD='$(ROOT_PASSWD)' \
 			--build-arg WEBUI_ADMIN_PASSWD='$(WEBUI_ADMIN_PASSWD)' \

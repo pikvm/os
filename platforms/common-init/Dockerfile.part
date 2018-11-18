@@ -11,12 +11,17 @@ RUN systemctl enable nginx
 COPY stages/pikvm-common-init/customizepkg.nginx /etc/customizepkg.d/nginx-mainline-mod-ndk
 COPY stages/pikvm-common-init/customizepkg.nginx /etc/customizepkg.d/nginx-mainline-mod-lua
 RUN env MAKEPKGOPTS="--skipchecksums --skippgpcheck" pkg-install nginx-mainline-mod-lua
-RUN pkg-install lua51-cjson
 
 ARG USTREAMER_VERSION
 ENV USTREAMER_VERSION $USTREAMER_VERSION
 RUN echo $USTREAMER_VERSION
 RUN pkg-install ustreamer
+
+ARG KVMD_WEBTERM_VERSION
+ENV KVMD_WEBTERM_VERSION $KVMD_WEBTERM_VERSION
+RUN echo $KVMD_WEBTERM_VERSION
+RUN pkg-install kvmd-webterm
+RUN systemctl enable kvmd-webterm
 
 ARG KVMD_VERSION
 ENV KVMD_VERSION $KVMD_VERSION
@@ -38,5 +43,5 @@ RUN sed -i -e "s/console=ttyAMA0\,115200//g" /boot/cmdline.txt \
 RUN systemctl mask serial-getty@ttyAMA0.service
 
 RUN rm -rf /etc/nginx/* \
-	&& cp -r /usr/share/kvmd/configs/nginx/* /etc/nginx/ \
+	&& cp -r /usr/share/kvmd/configs.default/nginx/* /etc/nginx/ \
 	&& sed -i -e "s/^#PROD//g" /etc/nginx/nginx.conf

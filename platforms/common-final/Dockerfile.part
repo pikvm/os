@@ -1,6 +1,6 @@
 ARG PLATFORM
-RUN cp /usr/share/kvmd/configs/kvmd/platforms/kvmd.$PLATFORM.yaml /etc/kvmd/kvmd.yaml \
-	&& cp /usr/share/kvmd/configs/kvmd/*.yaml /etc/kvmd/
+RUN cp /usr/share/kvmd/configs.default/kvmd/platforms/kvmd.$PLATFORM.yaml /etc/kvmd/kvmd.yaml \
+	&& cp /usr/share/kvmd/configs.default/kvmd/*.yaml /etc/kvmd/
 
 ARG ROOT_PASSWD
 ENV ROOT_PASSWD $ROOT_PASSWD
