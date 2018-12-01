@@ -5,6 +5,7 @@ RUN pkg-install \
 	v4l-utils \
 	python \
 	python-raspberry-gpio \
+	gotty \
 	customizepkg
 RUN systemctl enable nginx
 
