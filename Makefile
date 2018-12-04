@@ -1,3 +1,5 @@
+-include config.mk
+
 CARD ?= /dev/mmcblk0
 CARD_BOOT ?= $(CARD)p1
 CARD_ROOT ?= $(CARD)p2
