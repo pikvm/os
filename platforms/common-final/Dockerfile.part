@@ -1,6 +1,8 @@
 ARG PLATFORM
-RUN cp /usr/share/kvmd/configs.default/kvmd/platforms/kvmd.$PLATFORM.yaml /etc/kvmd/kvmd.yaml \
-	&& cp /usr/share/kvmd/configs.default/kvmd/*.yaml /etc/kvmd/
+RUN ln -s /usr/share/kvmd/configs.default/kvmd/platforms/kvmd.$PLATFORM.yaml /etc/kvmd/kvmd.yaml \
+	&& ln -s /usr/share/kvmd/configs.default/kvmd/*.yaml /etc/kvmd/ \
+	&& rm /etc/kvmd/meta.yaml \
+	&& cp /usr/share/kvmd/configs.default/kvmd/meta.yaml /etc/kvmd/
 
 ARG ROOT_PASSWD
 ENV ROOT_PASSWD $ROOT_PASSWD
@@ -10,7 +12,9 @@ RUN userdel -r -f alarm
 
 ARG WEBUI_ADMIN_PASSWD
 ENV WEBUI_ADMIN_PASSWD $WEBUI_ADMIN_PASSWD
-RUN echo "$WEBUI_ADMIN_PASSWD" | htpasswd -ci /etc/nginx/htpasswd admin
+RUN echo "$WEBUI_ADMIN_PASSWD" | htpasswd -ci /etc/kvmd/htpasswd admin \
+	&& chown root:kvmd /etc/kvmd/htpasswd \
+	&& chmod 640 /etc/kvmd/htpasswd
 
 ARG NEW_HTTPS_CERT
 ENV NEW_HTTPS_CERT $NEW_HTTPS_CERT
@@ -19,7 +23,7 @@ RUN mkdir /etc/nginx/ssl \
 	&& cd /etc/nginx/ssl \
 	&& openssl req -new -x509 -nodes -newkey rsa:4096 -keyout server.key -out server.crt -days 3650 \
 		-subj "/C=RU/ST=Moscow/L=Moscow/O=Pi-KVM/OU=Pi-KVM/CN=localhost" \
+	&& chown -R root:http /etc/nginx/ssl \
 	&& chmod 400 server.key \
 	&& chmod 444 server.crt \
-	&& chmod 750 /etc/nginx/ssl \
-	&& chown -R root:http /etc/nginx/ssl
+	&& chmod 750 /etc/nginx/ssl

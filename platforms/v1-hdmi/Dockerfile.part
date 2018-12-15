@@ -17,5 +17,5 @@ RUN [ "$BOARD" == "rpi3" ] && ( \
 
 COPY stages/pikvm-v1-hdmi/modules.load /etc/modules-load.d/pikvm.conf
 
-RUN cp /usr/share/kvmd/configs.default/kvmd/tc358743-edid.hex /etc/kvmd/tc358743-edid.hex
+RUN ln -s /usr/share/kvmd/configs.default/kvmd/tc358743-edid.hex /etc/kvmd/tc358743-edid.hex
 RUN systemctl enable kvmd-tc358743
