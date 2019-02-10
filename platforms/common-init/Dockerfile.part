@@ -1,6 +1,5 @@
 RUN pkg-install \
 	nginx-mainline \
-	apache-tools \
 	raspberrypi-firmware \
 	v4l-utils \
 	python \

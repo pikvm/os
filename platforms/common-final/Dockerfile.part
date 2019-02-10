@@ -12,7 +12,8 @@ RUN userdel -r -f alarm
 
 ARG WEBUI_ADMIN_PASSWD
 ENV WEBUI_ADMIN_PASSWD $WEBUI_ADMIN_PASSWD
-RUN echo "$WEBUI_ADMIN_PASSWD" | htpasswd -ci /etc/kvmd/htpasswd admin \
+RUN touch /etc/kvmd/htpasswd \
+	&& echo "$WEBUI_ADMIN_PASSWD" | kvmd-htpasswd set --read-stdin admin \
 	&& chown root:kvmd /etc/kvmd/htpasswd \
 	&& chmod 640 /etc/kvmd/htpasswd
 

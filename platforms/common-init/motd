@@ -13,5 +13,5 @@
     The root filesystem of Pi-KVM is mounted in read-only mode by default.
     Use command "rw" to remount it in the RW-mode and "ro" to switch it back.
 
-    To change KVM password use command "htpasswd /etc/kvmd/htpasswd admin".
+    To change KVM password use command "kvmd-htpasswd set admin".
 
