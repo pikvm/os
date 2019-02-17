@@ -1,22 +1,26 @@
 RUN pkg-install \
 	nginx-mainline \
 	raspberrypi-firmware \
+	raspberrypi-io-access \
 	v4l-utils \
 	python \
 	python-raspberry-gpio \
 	gotty
-RUN systemctl enable nginx
 
 ARG USTREAMER_VERSION
 ENV USTREAMER_VERSION $USTREAMER_VERSION
 RUN echo $USTREAMER_VERSION
 RUN pkg-install ustreamer
 
+ARG PLATFORM
 ARG KVMD_VERSION
 ENV KVMD_VERSION $KVMD_VERSION
 RUN echo $KVMD_VERSION
-RUN pkg-install kvmd
+RUN pkgs=kvmd \
+	; [ $PLATFORM == v1-hdmi ] && pkgs="dkms tc358743-dkms $pkgs" \
+	; env _PLATFORMS=$PLATFORM _BOARDS=$BOARD pkg-install $pkgs
 RUN systemctl enable kvmd
+RUN systemctl enable kvmd-nginx
 
 ARG KVMD_WEBTERM_VERSION
 ENV KVMD_WEBTERM_VERSION $KVMD_WEBTERM_VERSION
@@ -24,18 +28,7 @@ RUN echo $KVMD_WEBTERM_VERSION
 RUN pkg-install kvmd-webterm
 RUN systemctl enable kvmd-webterm
 
-RUN groupadd -r gpio \
-	&& groupmems -g gpio -a kvmd \
-	&& groupmems -g uucp -a kvmd \
-	&& groupmems -g systemd-journal -a kvmd
-
-COPY stages/pikvm-common-init/gpio.udev.rules /etc/udev/rules.d/99-gpio.rules
-COPY stages/pikvm-common-init/sysctl.conf /etc/sysctl.d/99-pikvm.conf
 COPY stages/pikvm-common-init/motd /etc/
 
-RUN sed -i -e "s/console=ttyAMA0\,115200//g" /boot/cmdline.txt \
-	&& sed -i -e "s/kgdboc=ttyAMA0\,115200//g" /boot/cmdline.txt
-RUN systemctl mask serial-getty@ttyAMA0.service
-
-RUN rm -rf /etc/nginx/* \
-	&& ln -s /usr/share/kvmd/configs.default/nginx/*.conf /etc/nginx/
+RUN sed -i -f /usr/share/kvmd/configs.default/os/cmdline/$PLATFORM.sed /boot/cmdline.txt
+RUN cp /usr/share/kvmd/configs.default/os/boot-config/$PLATFORM-$BOARD.txt /boot/config.txt

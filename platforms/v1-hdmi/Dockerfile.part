@@ -1,21 +1,2 @@
-RUN pkg-install \
-	dkms \
-	tc358743-dkms
-
-RUN sed -i -e "s/rootwait/cma=128M rootwait/g" /boot/cmdline.txt
-
-COPY stages/pikvm-v1-hdmi/config.txt /boot/
-RUN [ "$BOARD" == "rpi3" ] && ( \
-		sed -i -e 's/,i2c_pins_28_29=1//g' /boot/config.txt; \
-		echo "dtoverlay=pi3-disable-bt" >> /boot/config.txt; \
-	) || true
-
-COPY stages/pikvm-v1-hdmi/udev.rules /etc/udev/rules.d/99-pikvm.rules
-RUN [ "$BOARD" == "rpi3" ] && ( \
-		sed -i -e 's/KERNELS=="1-1\.4:1\.0"/KERNELS=="1-1.1.2:1.0"/g' /etc/udev/rules.d/99-pikvm.rules; \
-	) || true
-
-COPY stages/pikvm-v1-hdmi/modules.load /etc/modules-load.d/pikvm.conf
-
-RUN ln -s /usr/share/kvmd/configs.default/kvmd/tc358743-edid.hex /etc/kvmd/tc358743-edid.hex
+RUN systemctl mask serial-getty@ttyAMA0.service
 RUN systemctl enable kvmd-tc358743
