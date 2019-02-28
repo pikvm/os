@@ -1,22 +1,19 @@
 -include config.mk
 
-CARD ?= /dev/mmcblk0
-CARD_BOOT ?= $(CARD)p1
-CARD_ROOT ?= $(CARD)p2
-
 BOARD ?= rpi2
 PLATFORM ?= v1-vga
 STAGES ?= __init__ os watchdog ro pikvm-common-init pikvm-$(PLATFORM) pikvm-common-final sshkeygen __cleanup__
-
-BUILD_OPTS ?=
 
 HOSTNAME ?= pikvm
 LOCALE ?= en_US
 TIMEZONE ?= Europe/Moscow
 REPO_URL ?= http://mirror.yandex.ru/archlinux-arm
+BUILD_OPTS ?=
 
 ROOT_PASSWD ?= root
 WEBUI_ADMIN_PASSWD ?= admin
+
+CARD ?= /dev/mmcblk0
 
 
 # =====
@@ -89,8 +86,6 @@ $(_BUILD_DIR):
 install: $(_BUILD_DIR)
 	cd $(_BUILD_DIR) && make install \
 		CARD=$(CARD) \
-		CARD_BOOT=$(CARD_BOOT) \
-		CARD_ROOT=$(CARD_ROOT) \
 		HOSTNAME=$(HOSTNAME)
 
 
