@@ -1,3 +1,5 @@
+ENV GOCACHE /tmp/gocache
+
 RUN pkg-install \
 	nginx-mainline \
 	raspberrypi-firmware \
