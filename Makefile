@@ -17,7 +17,7 @@ CARD ?= /dev/mmcblk0
 
 
 # =====
-_BUILD_DIR = ./.build
+_BUILDER_DIR = ./.pi-builder
 
 define fetch_version
 $(shell curl --silent "https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=$(1)" \
@@ -51,16 +51,16 @@ v1-hdmi-rpi3:
 
 
 shell:
-	cd $(_BUILD_DIR) && make shell
+	cd $(_BUILDER_DIR) && make shell
 
 
-_pikvm: $(_BUILD_DIR)
-	rm -rf $(_BUILD_DIR)/stages/pikvm-*
-	rm -rf $(_BUILD_DIR)/builder/scripts/pikvm
-	cp -a platforms/common-init $(_BUILD_DIR)/stages/pikvm-common-init
-	cp -a platforms/common-final $(_BUILD_DIR)/stages/pikvm-common-final
-	cp -a platforms/$(PLATFORM) $(_BUILD_DIR)/stages/pikvm-$(PLATFORM)
-	cd $(_BUILD_DIR) && make binfmt os \
+_pikvm: $(_BUILDER_DIR)
+	rm -rf $(_BUILDER_DIR)/stages/pikvm-*
+	rm -rf $(_BUILDER_DIR)/builder/scripts/pikvm
+	cp -a platforms/common-init $(_BUILDER_DIR)/stages/pikvm-common-init
+	cp -a platforms/common-final $(_BUILDER_DIR)/stages/pikvm-common-final
+	cp -a platforms/$(PLATFORM) $(_BUILDER_DIR)/stages/pikvm-$(PLATFORM)
+	cd $(_BUILDER_DIR) && make binfmt os \
 		BUILD_OPTS=" $(BUILD_OPTS) \
 			--build-arg PLATFORM=$(PLATFORM) \
 			--build-arg USTREAMER_VERSION=$(call fetch_version,ustreamer) \
@@ -80,24 +80,24 @@ _pikvm: $(_BUILD_DIR)
 		REPO_URL=$(REPO_URL)
 
 
-$(_BUILD_DIR):
-	git clone --depth=1 https://github.com/mdevaev/pi-builder $(_BUILD_DIR)
+$(_BUILDER_DIR):
+	git clone --depth=1 https://github.com/mdevaev/pi-builder $(_BUILDER_DIR)
 
 
-install: $(_BUILD_DIR)
-	cd $(_BUILD_DIR) && make install \
+install: $(_BUILDER_DIR)
+	cd $(_BUILDER_DIR) && make install \
 		CARD=$(CARD) \
 		HOSTNAME=$(HOSTNAME)
 
 
-scan: $(_BUILD_DIR)
-	cd $(_BUILD_DIR) && make scan
+scan: $(_BUILDER_DIR)
+	cd $(_BUILDER_DIR) && make scan
 
 
-clean: $(_BUILD_DIR)
-	cd $(_BUILD_DIR) && make clean
+clean: $(_BUILDER_DIR)
+	cd $(_BUILDER_DIR) && make clean
 
 
 clean-all:
-	- cd $(_BUILD_DIR) && make clean-all
-	rm -rf $(_BUILD_DIR)
+	- cd $(_BUILDER_DIR) && make clean-all
+	rm -rf $(_BUILDER_DIR)
