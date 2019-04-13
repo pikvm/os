@@ -1,5 +1,3 @@
-ENV GOCACHE /tmp/gocache
-
 RUN pkg-install \
 	nginx-mainline \
 	raspberrypi-firmware \
@@ -20,7 +18,7 @@ ENV KVMD_VERSION $KVMD_VERSION
 RUN echo $KVMD_VERSION
 RUN pkgs=kvmd \
 	; [ $PLATFORM == v1-hdmi ] && pkgs="dkms tc358743-dkms $pkgs" \
-	; env _PLATFORMS=$PLATFORM _BOARDS=$BOARD pkg-install $pkgs
+	; env PIKVM_PLATFORM=$PLATFORM PIKVM_BOARD=$BOARD pkg-install $pkgs
 RUN systemctl enable kvmd
 RUN systemctl enable kvmd-nginx
 
