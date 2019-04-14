@@ -51,7 +51,7 @@ v1-hdmi-rpi3:
 
 
 shell:
-	cd $(_BUILDER_DIR) && make shell
+	make -C $(_BUILDER_DIR) shell
 
 
 _pikvm: $(_BUILDER_DIR)
@@ -60,7 +60,7 @@ _pikvm: $(_BUILDER_DIR)
 	cp -a platforms/common-init $(_BUILDER_DIR)/stages/pikvm-common-init
 	cp -a platforms/common-final $(_BUILDER_DIR)/stages/pikvm-common-final
 	cp -a platforms/$(PLATFORM) $(_BUILDER_DIR)/stages/pikvm-$(PLATFORM)
-	cd $(_BUILDER_DIR) && make binfmt os \
+	make -C $(_BUILDER_DIR) binfmt os \
 		BUILD_OPTS=" $(BUILD_OPTS) \
 			--build-arg PLATFORM=$(PLATFORM) \
 			--build-arg USTREAMER_VERSION=$(call fetch_version,ustreamer) \
@@ -85,19 +85,19 @@ $(_BUILDER_DIR):
 
 
 install: $(_BUILDER_DIR)
-	cd $(_BUILDER_DIR) && make install \
+	make -C $(_BUILDER_DIR) install \
 		CARD=$(CARD) \
 		HOSTNAME=$(HOSTNAME)
 
 
 scan: $(_BUILDER_DIR)
-	cd $(_BUILDER_DIR) && make scan
+	make -C $(_BUILDER_DIR) scan
 
 
 clean: $(_BUILDER_DIR)
-	cd $(_BUILDER_DIR) && make clean
+	make -C $(_BUILDER_DIR) clean
 
 
 clean-all:
-	- cd $(_BUILDER_DIR) && make clean-all
+	- make -C $(_BUILDER_DIR) clean-all
 	rm -rf $(_BUILDER_DIR)
