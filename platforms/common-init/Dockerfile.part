@@ -1,4 +1,5 @@
 RUN pkg-install \
+	libevent-patched \
 	nginx-mainline \
 	raspberrypi-firmware \
 	raspberrypi-io-access \
