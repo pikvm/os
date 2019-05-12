@@ -1,12 +1,15 @@
 RUN pkg-install \
-	libevent-patched \
+	libwebsockets-patched \
+	libevent-patched
+
+RUN pkg-install \
 	nginx-mainline \
 	raspberrypi-firmware \
 	raspberrypi-io-access \
 	v4l-utils \
 	python \
 	python-raspberry-gpio \
-	gotty \
+	ttyd \
 	yay
 
 ARG USTREAMER_VERSION
