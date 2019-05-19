@@ -84,6 +84,11 @@ $(_BUILDER_DIR):
 	git clone --depth=1 https://github.com/mdevaev/pi-builder $(_BUILDER_DIR)
 
 
+update: $(_BUILDER_DIR)
+	cd $(_BUILDER_DIR) && git pull --rebase
+	git pull --rebase
+
+
 install: $(_BUILDER_DIR)
 	make -C $(_BUILDER_DIR) install \
 		CARD=$(CARD) \
