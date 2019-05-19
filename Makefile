@@ -90,9 +90,7 @@ update: $(_BUILDER_DIR)
 
 
 install: $(_BUILDER_DIR)
-	make -C $(_BUILDER_DIR) install \
-		CARD=$(CARD) \
-		HOSTNAME=$(HOSTNAME)
+	make -C $(_BUILDER_DIR) install CARD=$(CARD)
 
 
 scan: $(_BUILDER_DIR)
