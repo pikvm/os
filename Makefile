@@ -60,7 +60,7 @@ _pikvm: $(_BUILDER_DIR)
 	cp -a platforms/common-init $(_BUILDER_DIR)/stages/pikvm-common-init
 	cp -a platforms/common-final $(_BUILDER_DIR)/stages/pikvm-common-final
 	cp -a platforms/$(PLATFORM) $(_BUILDER_DIR)/stages/pikvm-$(PLATFORM)
-	make -C $(_BUILDER_DIR) binfmt os \
+	make -C $(_BUILDER_DIR) os \
 		BUILD_OPTS=" $(BUILD_OPTS) \
 			--build-arg PLATFORM=$(PLATFORM) \
 			--build-arg USTREAMER_VERSION=$(call fetch_version,ustreamer) \
