@@ -30,15 +30,31 @@ endef
 all:
 	@ echo "Available commands:"
 	@ echo "    make                # Print this help"
+	@ echo
+	@ echo "    make v0-vga-rpi2    # Build v0-vga-rpi2"
+	@ echo "    make v0-hdmi-rpi2   # Build v0-hdmi-rpi2"
+	@ echo "    make v0-vga-rpi3    # Build v0-vga-rpi3"
+	@ echo "    make v0-hdmi-rpi3   # Build v0-hdmi-rpi3"
+	@ echo
 	@ echo "    make v1-vga-rpi2    # Build v1-vga-rpi2"
 	@ echo "    make v1-hdmi-rpi2   # Build v1-hdmi-rpi2"
 	@ echo "    make v1-vga-rpi3    # Build v1-vga-rpi3"
 	@ echo "    make v1-hdmi-rpi3   # Build v1-hdmi-rpi3"
+	@ echo
 	@ echo "    make shell          # Run Arch-ARM shell"
 	@ echo "    make install        # Install rootfs to partitions on $(CARD)"
 	@ echo "    make scan           # Find all RPi devices in the local network"
 	@ echo "    make clean          # Remove the generated rootfs"
 	@ echo "    make clean-all      # Remove the generated rootfs and pi-builder toolchain"
+
+v0-vga-rpi2:
+	make _pikvm BOARD=rpi2 PLATFORM=v0-vga
+v0-hdmi-rpi2:
+	make _pikvm BOARD=rpi2 PLATFORM=v0-hdmi
+v0-vga-rpi3:
+	make _pikvm BOARD=rpi3 PLATFORM=v0-vga
+v0-hdmi-rpi3:
+	make _pikvm BOARD=rpi3 PLATFORM=v0-hdmi
 
 v1-vga-rpi2:
 	make _pikvm BOARD=rpi2 PLATFORM=v1-vga

@@ -22,7 +22,7 @@ ARG KVMD_VERSION
 ENV KVMD_VERSION $KVMD_VERSION
 RUN echo $KVMD_VERSION
 RUN pkgs=kvmd \
-	; [ $PLATFORM == v1-hdmi ] && pkgs="dkms tc358743-dkms $pkgs" \
+	; [ $PLATFORM == v0-hdmi -o $PLATFORM == v1-hdmi ] && pkgs="dkms tc358743-dkms $pkgs" \
 	; env PIKVM_PLATFORM=$PLATFORM PIKVM_BOARD=$BOARD pkg-install $pkgs
 RUN systemctl enable kvmd
 RUN systemctl enable kvmd-nginx
