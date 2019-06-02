@@ -1,5 +1,5 @@
 RUN cd /tmp \
-	&& sudo -u packer git clone https://aur.archlinux.org/yay-kit.git \
+	&& sudo -u packer git clone https://github.com/pi-kvm/yay-kit.git \
 	&& cd yay-kit \
 	&& sudo -u packer makepkg \
 	&& pacman --noconfirm -R packer-kit \

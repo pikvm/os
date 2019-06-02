@@ -1,8 +1,8 @@
-RUN pkg-install \
+RUN pkg-install -S \
 	libwebsockets-patched \
 	libevent-patched
 
-RUN pkg-install \
+RUN pkg-install -S \
 	nginx-mainline \
 	raspberrypi-firmware \
 	raspberrypi-io-access \
@@ -15,7 +15,7 @@ RUN pkg-install \
 ARG USTREAMER_VERSION
 ENV USTREAMER_VERSION $USTREAMER_VERSION
 RUN echo $USTREAMER_VERSION
-RUN pkg-install ustreamer
+RUN pkg-install -S ustreamer
 
 ARG PLATFORM
 ARG KVMD_VERSION
@@ -23,14 +23,14 @@ ENV KVMD_VERSION $KVMD_VERSION
 RUN echo $KVMD_VERSION
 RUN pkgs=kvmd \
 	; [ $PLATFORM == v0-hdmi -o $PLATFORM == v1-hdmi ] && pkgs="dkms tc358743-dkms $pkgs" \
-	; env PIKVM_PLATFORM=$PLATFORM PIKVM_BOARD=$BOARD pkg-install $pkgs
+	; env PIKVM_PLATFORM=$PLATFORM PIKVM_BOARD=$BOARD pkg-install -S $pkgs
 RUN systemctl enable kvmd
 RUN systemctl enable kvmd-nginx
 
 ARG KVMD_WEBTERM_VERSION
 ENV KVMD_WEBTERM_VERSION $KVMD_WEBTERM_VERSION
 RUN echo $KVMD_WEBTERM_VERSION
-RUN pkg-install kvmd-webterm
+RUN pkg-install -S kvmd-webterm
 RUN systemctl enable kvmd-webterm
 
 COPY stages/pikvm-common-init/motd /etc/

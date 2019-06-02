@@ -66,7 +66,7 @@ v1-hdmi-rpi3:
 	make _pikvm BOARD=rpi3 PLATFORM=v1-hdmi
 
 
-shell:
+shell: $(_BUILDER_DIR)
 	make -C $(_BUILDER_DIR) shell
 
 
