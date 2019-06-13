@@ -1,6 +1,5 @@
 RUN pkg-install -S \
-	libwebsockets-patched \
-	libevent-patched
+	libwebsockets-patched
 
 RUN pkg-install -S \
 	nginx-mainline \
