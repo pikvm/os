@@ -12,6 +12,7 @@ BUILD_OPTS ?=
 
 ROOT_PASSWD ?= root
 WEBUI_ADMIN_PASSWD ?= admin
+IPMI_ADMIN_PASSWD ?= admin
 
 CARD ?= /dev/mmcblk0
 
@@ -85,6 +86,7 @@ _pikvm: $(_BUILDER_DIR)
 			--build-arg NEW_SSH_KEYGEN=$(shell uuidgen) \
 			--build-arg ROOT_PASSWD='$(ROOT_PASSWD)' \
 			--build-arg WEBUI_ADMIN_PASSWD='$(WEBUI_ADMIN_PASSWD)' \
+			--build-arg IPMI_ADMIN_PASSWD='$(IPMI_ADMIN_PASSWD)' \
 			--build-arg NEW_HTTPS_CERT=$(shell uuidgen) \
 		" \
 		PROJECT=pikvm \
