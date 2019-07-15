@@ -8,6 +8,7 @@ RUN pkg-install -S \
 	v4l-utils \
 	python \
 	python-raspberry-gpio \
+	wiringpi \
 	ttyd \
 	yay
 
