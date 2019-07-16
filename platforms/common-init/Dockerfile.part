@@ -9,8 +9,9 @@ RUN pkg-install -S \
 	python \
 	python-raspberry-gpio \
 	wiringpi \
-	ttyd \
-	yay
+	ttyd
+#	ttyd \
+#	yay
 
 ARG USTREAMER_VERSION
 ENV USTREAMER_VERSION $USTREAMER_VERSION
