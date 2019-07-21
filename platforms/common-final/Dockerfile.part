@@ -1,12 +1,3 @@
-#RUN cd /tmp \
-#	&& sudo -u packer git clone https://github.com/pi-kvm/yay-kit.git \
-#	&& cd yay-kit \
-#	&& sudo -u packer makepkg \
-#	&& pacman --noconfirm -R packer-kit \
-#	&& pacman --noconfirm -U yay-kit-*.pkg.tar.xz \
-#	&& cd - \
-#	&& rm -rf /tmp/packer-kit
-
 ARG ROOT_PASSWD
 ENV ROOT_PASSWD $ROOT_PASSWD
 RUN echo "root:$ROOT_PASSWD" | chpasswd

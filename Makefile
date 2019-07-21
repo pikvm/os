@@ -2,7 +2,7 @@
 
 BOARD ?= rpi2
 PLATFORM ?= v1-vga
-STAGES ?= __init__ os watchdog ro pikvm-common-init pikvm-$(PLATFORM) pikvm-common-final sshkeygen __cleanup__
+STAGES ?= __init__ os pikvm-repo watchdog ro pikvm-common-init pikvm-$(PLATFORM) pikvm-common-final sshkeygen __cleanup__
 
 HOSTNAME ?= pikvm
 LOCALE ?= en_US
@@ -21,9 +21,7 @@ CARD ?= /dev/mmcblk0
 _BUILDER_DIR = ./.pi-builder
 
 define fetch_version
-$(shell curl --silent "https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=$(1)" \
-	| grep "^pkgver=" \
-	| grep -Po "\d+\.\d+[^\"']*")
+$(shell curl --silent "https://pikvm.org/repos/$(BOARD)/latest/$(1)")
 endef
 
 
@@ -72,7 +70,7 @@ shell: $(_BUILDER_DIR)
 
 
 _pikvm: $(_BUILDER_DIR)
-	rm -rf $(_BUILDER_DIR)/stages/pikvm-*
+	cd $(_BUILDER_DIR)/stages && rm -rf pikvm-common-init pikvm-common-final pikvm-v*
 	rm -rf $(_BUILDER_DIR)/builder/scripts/pikvm
 	cp -a platforms/common-init $(_BUILDER_DIR)/stages/pikvm-common-init
 	cp -a platforms/common-final $(_BUILDER_DIR)/stages/pikvm-common-final
@@ -82,7 +80,6 @@ _pikvm: $(_BUILDER_DIR)
 			--build-arg PLATFORM=$(PLATFORM) \
 			--build-arg USTREAMER_VERSION=$(call fetch_version,ustreamer) \
 			--build-arg KVMD_VERSION=$(call fetch_version,kvmd) \
-			--build-arg KVMD_WEBTERM_VERSION=$(call fetch_version,kvmd-webterm) \
 			--build-arg NEW_SSH_KEYGEN=$(shell uuidgen) \
 			--build-arg ROOT_PASSWD='$(ROOT_PASSWD)' \
 			--build-arg WEBUI_ADMIN_PASSWD='$(WEBUI_ADMIN_PASSWD)' \
