@@ -1,30 +1,22 @@
+ARG USTREAMER_VERSION
+ARG KVMD_VERSION
+ARG PLATFORM
+ENV INSTALLATION $USTREAMER_VERSION $KVMD_VERSION $PLATFORM
+RUN echo $INSTALLATION \
+	; pkgs="kvmd kvmd-webterm kvmd-platform-$PLATFORM-$BOARD" \
+	; [ $PLATFORM == v0-hdmi -o $PLATFORM == v1-hdmi ] && pkgs="dkms tc358743-dkms $pkgs" \
+	; pkg-install -S $pkgs
+
+RUN systemctl enable kvmd \
+	&& systemctl enable kvmd-nginx \
+	&& systemctl enable kvmd-webterm
+
 RUN pkg-install -S \
 	nginx-mainline \
 	python \
 	python-raspberry-gpio
 
-ARG USTREAMER_VERSION
-ENV USTREAMER_VERSION $USTREAMER_VERSION
-RUN echo $USTREAMER_VERSION
-RUN pkg-install -S ustreamer
-
-ARG PLATFORM
-ARG KVMD_VERSION
-ENV KVMD_VERSION $KVMD_VERSION
-RUN echo $KVMD_VERSION
-RUN pkgs="kvmd kvmd-platform-$PLATFORM-$BOARD" \
-	; [ $PLATFORM == v0-hdmi -o $PLATFORM == v1-hdmi ] && pkgs="dkms tc358743-dkms $pkgs" \
-	; pkg-install -S $pkgs
-RUN systemctl enable kvmd
-RUN systemctl enable kvmd-nginx
-
-#ARG KVMD_WEBTERM_VERSION
-#ENV KVMD_WEBTERM_VERSION $KVMD_WEBTERM_VERSION
-#RUN echo $KVMD_WEBTERM_VERSION
-#RUN pkg-install -S kvmd-webterm
-#RUN systemctl enable kvmd-webterm
-
 COPY stages/pikvm-common-init/motd /etc/
 
-RUN sed -i -f /usr/share/kvmd/configs.default/os/cmdline/$PLATFORM.sed /boot/cmdline.txt
-RUN cp /usr/share/kvmd/configs.default/os/boot-config/$PLATFORM-$BOARD.txt /boot/config.txt
+RUN sed -i -f /usr/share/kvmd/configs.default/os/cmdline/$PLATFORM.sed /boot/cmdline.txt \
+	&& cp /usr/share/kvmd/configs.default/os/boot-config/$PLATFORM-$BOARD.txt /boot/config.txt

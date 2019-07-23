@@ -1,8 +1,8 @@
 ARG ROOT_PASSWD
 ENV ROOT_PASSWD $ROOT_PASSWD
-RUN echo "root:$ROOT_PASSWD" | chpasswd
-RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
-RUN userdel -r -f alarm
+RUN echo "root:$ROOT_PASSWD" | chpasswd \
+	&& echo "PermitRootLogin yes" >> /etc/ssh/sshd_config \
+	&& userdel -r -f alarm
 
 ARG WEBUI_ADMIN_PASSWD
 ENV WEBUI_ADMIN_PASSWD $WEBUI_ADMIN_PASSWD
@@ -15,6 +15,5 @@ RUN sed -i "\$d" /etc/kvmd/ipmipasswd \
 
 ARG NEW_HTTPS_CERT
 ENV NEW_HTTPS_CERT $NEW_HTTPS_CERT
-RUN echo $NEW_HTTPS_CERT
-
-RUN kvmd-gencert
+RUN echo $NEW_HTTPS_CERT \
+	&& kvmd-gencert
