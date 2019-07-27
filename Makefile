@@ -29,7 +29,7 @@ $1: PLATFORM:=$(word 1,$(subst -, ,$1))-$(word 2,$(subst -, ,$1))
 endef
 
 define make_os_help
-	@ echo "    make $1"
+@ echo "    make $1"
 endef
 
 define fetch_version
