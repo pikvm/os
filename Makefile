@@ -20,6 +20,18 @@ CARD ?= /dev/mmcblk0
 # =====
 _BUILDER_DIR = ./.pi-builder
 
+_OS_TARGETS = v0-vga-rpi2 v0-hdmi-rpi2 v0-vga-rpi3 v0-hdmi-rpi3 \
+	v1-vga-rpi2 v1-hdmi-rpi2 v1-vga-rpi3 v1-hdmi-rpi3
+
+define make_os_target
+$1: BOARD:=$(word 3,$(subst -, ,$1))
+$1: PLATFORM:=$(word 1,$(subst -, ,$1))-$(word 2,$(subst -, ,$1))
+endef
+
+define make_os_help
+	@ echo "    make $1"
+endef
+
 define fetch_version
 $(shell curl --silent "https://pikvm.org/repos/$(BOARD)/latest/$(1)")
 endef
@@ -30,15 +42,7 @@ all:
 	@ echo "Available commands:"
 	@ echo "    make                # Print this help"
 	@ echo
-	@ echo "    make v0-vga-rpi2    # Build v0-vga-rpi2"
-	@ echo "    make v0-hdmi-rpi2   # Build v0-hdmi-rpi2"
-	@ echo "    make v0-vga-rpi3    # Build v0-vga-rpi3"
-	@ echo "    make v0-hdmi-rpi3   # Build v0-hdmi-rpi3"
-	@ echo
-	@ echo "    make v1-vga-rpi2    # Build v1-vga-rpi2"
-	@ echo "    make v1-hdmi-rpi2   # Build v1-hdmi-rpi2"
-	@ echo "    make v1-vga-rpi3    # Build v1-vga-rpi3"
-	@ echo "    make v1-hdmi-rpi3   # Build v1-hdmi-rpi3"
+	@ for target in $(_OS_TARGETS); do echo "    make $$target"; done
 	@ echo
 	@ echo "    make shell          # Run Arch-ARM shell"
 	@ echo "    make install        # Install rootfs to partitions on $(CARD)"
@@ -46,30 +50,16 @@ all:
 	@ echo "    make clean          # Remove the generated rootfs"
 	@ echo "    make clean-all      # Remove the generated rootfs and pi-builder toolchain"
 
-v0-vga-rpi2:
-	make _pikvm BOARD=rpi2 PLATFORM=v0-vga
-v0-hdmi-rpi2:
-	make _pikvm BOARD=rpi2 PLATFORM=v0-hdmi
-v0-vga-rpi3:
-	make _pikvm BOARD=rpi3 PLATFORM=v0-vga
-v0-hdmi-rpi3:
-	make _pikvm BOARD=rpi3 PLATFORM=v0-hdmi
 
-v1-vga-rpi2:
-	make _pikvm BOARD=rpi2 PLATFORM=v1-vga
-v1-hdmi-rpi2:
-	make _pikvm BOARD=rpi2 PLATFORM=v1-hdmi
-v1-vga-rpi3:
-	make _pikvm BOARD=rpi3 PLATFORM=v1-vga
-v1-hdmi-rpi3:
-	make _pikvm BOARD=rpi3 PLATFORM=v1-hdmi
+$(foreach target,$(_OS_TARGETS),$(eval $(call make_os_target,$(target))))
+$(_OS_TARGETS): _os
 
 
 shell: $(_BUILDER_DIR)
 	make -C $(_BUILDER_DIR) shell
 
 
-_pikvm: $(_BUILDER_DIR)
+_os: $(_BUILDER_DIR)
 	cd $(_BUILDER_DIR)/stages && rm -rf pikvm-common-init pikvm-common-final pikvm-v*
 	rm -rf $(_BUILDER_DIR)/builder/scripts/pikvm
 	cp -a platforms/common-init $(_BUILDER_DIR)/stages/pikvm-common-init
@@ -80,7 +70,6 @@ _pikvm: $(_BUILDER_DIR)
 			--build-arg PLATFORM=$(PLATFORM) \
 			--build-arg USTREAMER_VERSION=$(call fetch_version,ustreamer) \
 			--build-arg KVMD_VERSION=$(call fetch_version,kvmd) \
-			--build-arg NEW_SSH_KEYGEN=$(shell uuidgen) \
 			--build-arg ROOT_PASSWD='$(ROOT_PASSWD)' \
 			--build-arg WEBUI_ADMIN_PASSWD='$(WEBUI_ADMIN_PASSWD)' \
 			--build-arg IPMI_ADMIN_PASSWD='$(IPMI_ADMIN_PASSWD)' \
