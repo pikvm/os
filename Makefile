@@ -61,6 +61,7 @@ _os: $(_BUILDER_DIR)
 	cp -a platforms/common-final $(_BUILDER_DIR)/stages/pikvm-common-final
 	cp -a platforms/$(PLATFORM) $(_BUILDER_DIR)/stages/pikvm-$(PLATFORM)
 	make -C $(_BUILDER_DIR) os \
+		NC=$(NC) \
 		BUILD_OPTS=" $(BUILD_OPTS) \
 			--build-arg PLATFORM=$(PLATFORM) \
 			--build-arg USTREAMER_VERSION=$(call fetch_version,ustreamer) \
