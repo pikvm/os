@@ -1,1 +1,0 @@
-RUN systemctl mask serial-getty@ttyAMA0.service

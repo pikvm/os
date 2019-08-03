@@ -1,8 +1,8 @@
 -include config.mk
 
-BOARD ?= rpi2
-PLATFORM ?= v1-vga
-STAGES ?= __init__ os pikvm-repo watchdog ro pikvm-common-init pikvm-$(PLATFORM) pikvm-common-final sshkeygen __cleanup__
+BOARD ?= rpi3
+PLATFORM ?= v0-vga
+STAGES ?= __init__ os pikvm-repo watchdog ro pikvm sshkeygen __cleanup__
 
 HOSTNAME ?= pikvm
 LOCALE ?= en_US
@@ -55,11 +55,8 @@ shell: $(_BUILDER_DIR)
 
 
 _os: $(_BUILDER_DIR)
-	cd $(_BUILDER_DIR)/stages && rm -rf pikvm-common-init pikvm-common-final pikvm-v*
-	rm -rf $(_BUILDER_DIR)/builder/scripts/pikvm
-	cp -a platforms/common-init $(_BUILDER_DIR)/stages/pikvm-common-init
-	cp -a platforms/common-final $(_BUILDER_DIR)/stages/pikvm-common-final
-	cp -a platforms/$(PLATFORM) $(_BUILDER_DIR)/stages/pikvm-$(PLATFORM)
+	rm -rf $(_BUILDER_DIR)/stages/pikvm
+	cp -a pikvm $(_BUILDER_DIR)/stages
 	make -C $(_BUILDER_DIR) os \
 		NC=$(NC) \
 		BUILD_OPTS=" $(BUILD_OPTS) \

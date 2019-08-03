@@ -1,2 +1,0 @@
-RUN systemctl mask serial-getty@ttyAMA0.service
-RUN systemctl enable kvmd-tc358743
