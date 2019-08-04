@@ -4,8 +4,7 @@ ARG KVMD_VERSION
 ENV INSTALLATION $PLATFORM $USTREAMER_VERSION $KVMD_VERSION
 RUN echo $INSTALLATION
 
-RUN [[ $PLATFORM =~ ^.*-hdmi$ ]] && pkgs="dkms tc358743-dkms $pkgs" \
-	; pkg-install -S kvmd kvmd-webterm kvmd-platform-$PLATFORM-$BOARD $pkgs
+RUN pkg-install -S kvmd-platform-$PLATFORM-$BOARD kvmd-webterm
 
 RUN systemctl enable kvmd \
 	&& systemctl enable kvmd-nginx \
