@@ -2,7 +2,7 @@
 
 BOARD ?= rpi3
 PLATFORM ?= v0-vga
-STAGES ?= __init__ os pikvm-repo watchdog ro pikvm sshkeygen __cleanup__
+STAGES ?= __init__ os pikvm-repo watchdog ro pikvm ssh-keygen __cleanup__
 
 HOSTNAME ?= pikvm
 LOCALE ?= en_US
@@ -63,6 +63,7 @@ _os: $(_BUILDER_DIR)
 			--build-arg PLATFORM=$(PLATFORM) \
 			--build-arg USTREAMER_VERSION=$(call fetch_version,ustreamer) \
 			--build-arg KVMD_VERSION=$(call fetch_version,kvmd) \
+			--build-arg KVMD_WEBTERM_VERSION=$(call fetch_version,kvmd-webterm) \
 			--build-arg ROOT_PASSWD='$(ROOT_PASSWD)' \
 			--build-arg WEBUI_ADMIN_PASSWD='$(WEBUI_ADMIN_PASSWD)' \
 			--build-arg IPMI_ADMIN_PASSWD='$(IPMI_ADMIN_PASSWD)' \
