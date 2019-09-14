@@ -33,6 +33,7 @@ all:
 	@ echo "Available commands:"
 	@ echo "    make                # Print this help"
 	@ echo
+	@ echo "    make os             # Build OS with your default config"
 	@ for target in $(_OS_TARGETS); do echo "    make $$target"; done
 	@ echo
 	@ echo "    make shell          # Run Arch-ARM shell"
@@ -47,14 +48,14 @@ $1: BOARD:=$(word 3,$(subst -, ,$1))
 $1: PLATFORM:=$(word 1,$(subst -, ,$1))-$(word 2,$(subst -, ,$1))
 endef
 $(foreach target,$(_OS_TARGETS),$(eval $(call make_os_target,$(target))))
-$(_OS_TARGETS): _os
+$(_OS_TARGETS): os
 
 
 shell: $(_BUILDER_DIR)
 	make -C $(_BUILDER_DIR) shell
 
 
-_os: $(_BUILDER_DIR)
+os: $(_BUILDER_DIR)
 	rm -rf $(_BUILDER_DIR)/stages/pikvm
 	cp -a pikvm $(_BUILDER_DIR)/stages
 	make -C $(_BUILDER_DIR) os \
