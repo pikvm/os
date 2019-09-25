@@ -7,7 +7,7 @@ STAGES ?= __init__ os pikvm-repo watchdog ro pikvm ssh-keygen __cleanup__
 HOSTNAME ?= pikvm
 LOCALE ?= en_US
 TIMEZONE ?= Europe/Moscow
-REPO_URL ?= http://mirror.yandex.ru/archlinux-arm
+REPO_URL ?= http://de3.mirror.archlinuxarm.org
 BUILD_OPTS ?=
 
 ROOT_PASSWD ?= root
