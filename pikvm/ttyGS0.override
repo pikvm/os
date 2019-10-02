@@ -1,0 +1,5 @@
+# https://github.com/raspberrypi/linux/issues/1929
+[Service]
+TTYReset=no
+TTYVHangup=no
+TTYVTDisallocate=no

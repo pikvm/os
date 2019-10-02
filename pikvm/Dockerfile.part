@@ -11,7 +11,16 @@ RUN systemctl enable kvmd \
 	&& systemctl enable kvmd-nginx \
 	&& systemctl enable kvmd-webterm \
 	&& ([[ ! $PLATFORM =~ ^.*-hdmi$ ]] || systemctl enable kvmd-tc358743) \
-	&& systemctl mask serial-getty@ttyAMA0.service
+	&& ([[ ! $PLATFORM =~ ^v[01]-.*$ ]] || systemctl mask serial-getty@ttyAMA0.service) \
+	&& ([[ ! $PLATFORM =~ ^v2-.*$ ]] || ( \
+		systemctl enable kvmd-otg \
+		&& systemctl enable getty@ttyGS0.service \
+		&& echo ttyGS0 >> /etc/securetty
+	))
+
+RUN mkdir /etc/systemd/system/getty@ttyGS0.service.d
+COPY stages/pikvm/ttyGS0.override /etc/systemd/system/getty@ttyGS0.service.d/override.conf
+RUN ([[ $PLATFORM =~ ^v2-.*$ ]] || rm -rf /etc/systemd/system/getty@ttyGS0.service.d)
 
 COPY stages/pikvm/motd /etc/
 
