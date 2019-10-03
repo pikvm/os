@@ -15,7 +15,7 @@ RUN systemctl enable kvmd \
 	&& ([[ ! $PLATFORM =~ ^v2-.*$ ]] || ( \
 		systemctl enable kvmd-otg \
 		&& systemctl enable getty@ttyGS0.service \
-		&& echo ttyGS0 >> /etc/securetty
+		&& echo ttyGS0 >> /etc/securetty \
 	))
 
 RUN mkdir /etc/systemd/system/getty@ttyGS0.service.d
