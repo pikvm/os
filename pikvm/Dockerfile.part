@@ -5,7 +5,7 @@ ARG KVMD_WEBTERM_VERSION
 ENV INSTALLATION $PLATFORM $USTREAMER_VERSION $KVMD_VERSION $KVMD_WEBTERM_VERSION
 RUN echo $INSTALLATION
 
-RUN pkg-install -S kvmd-platform-$PLATFORM-$BOARD kvmd-webterm
+RUN pkg-install kvmd-platform-$PLATFORM-$BOARD kvmd-webterm
 
 RUN systemctl enable kvmd \
 	&& systemctl enable kvmd-nginx \
