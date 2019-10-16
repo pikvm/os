@@ -51,4 +51,4 @@ RUN sed -i "\$d" /etc/kvmd/ipmipasswd \
 ARG NEW_HTTPS_CERT
 ENV NEW_HTTPS_CERT $NEW_HTTPS_CERT
 RUN echo $NEW_HTTPS_CERT \
-	&& kvmd-gencert
+	&& kvmd-gencert --do-the-thing
