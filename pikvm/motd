@@ -6,8 +6,6 @@
         |_|   |_|      |_|\_\    \/   |_|  |_|
 
     Welcome to Pi-KVM - Open Source IP-KVM based on Raspberry Pi
-
-    Website: https://pikvm.org
     ____________________________________________________________________________
 
     The root filesystem of Pi-KVM is mounted in read-only mode by default.
@@ -16,4 +14,8 @@
     To prevent kernel messages from printing to the terminal use "dmesg -n 1".
 
     To change KVM password use command "kvmd-htpasswd set admin".
+
+    Useful links:
+      * https://pikvm.org
+      * https://wiki.archlinux.org/index.php/Network_configuration
 
