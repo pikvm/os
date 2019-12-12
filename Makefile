@@ -1,7 +1,7 @@
 -include config.mk
 
-BOARD ?= rpi3
-PLATFORM ?= v0-vga
+BOARD ?= rpi4
+PLATFORM ?= v2-hdmi
 STAGES ?= __init__ os pikvm-repo watchdog ro pikvm ssh-keygen __cleanup__
 
 HOSTNAME ?= pikvm
