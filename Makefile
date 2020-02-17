@@ -2,7 +2,7 @@
 
 BOARD ?= rpi4
 PLATFORM ?= v2-hdmi
-STAGES ?= __init__ os pikvm-repo watchdog ro pikvm ssh-keygen __cleanup__
+STAGES ?= __init__ os pikvm-repo watchdog ro no-audit pikvm ssh-keygen __cleanup__
 
 HOSTNAME ?= pikvm
 LOCALE ?= en_US
