@@ -77,7 +77,7 @@ os: $(_BUILDER_DIR)
 			--build-arg IPMI_ADMIN_PASSWD='$(IPMI_ADMIN_PASSWD)' \
 			--build-arg NEW_HTTPS_CERT=$(shell uuidgen) \
 		" \
-		PROJECT=pikvm-os \
+		PROJECT=pikvm-os-$(PLATFORM) \
 		BOARD=$(BOARD) \
 		STAGES='$(STAGES)' \
 		HOSTNAME=$(HOSTNAME) \
