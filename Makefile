@@ -113,3 +113,14 @@ clean: $(_BUILDER_DIR)
 clean-all:
 	- make -C $(_BUILDER_DIR) clean-all
 	rm -rf $(_BUILDER_DIR)
+
+
+image:
+	sudo bash -x -c ' \
+		dd if=/dev/zero of=$(PLATFORM)-$(BOARD).img bs=512 count=12582912 \
+		&& device=`losetup --find --show $(PLATFORM)-$(BOARD).img` \
+		&& make install CARD=$$device \
+		&& losetup -d $$device \
+	'
+	bzip2 $(PLATFORM)-$(BOARD).img
+	sha1sum $(PLATFORM)-$(BOARD).img.bz2
