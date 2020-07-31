@@ -22,6 +22,7 @@ CARD ?= /dev/mmcblk0
 
 
 # =====
+SHELL = /bin/bash
 _BUILDER_DIR = ./.pi-builder
 
 define fetch_version
