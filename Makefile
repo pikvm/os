@@ -24,9 +24,6 @@ CARD ?= /dev/mmcblk0
 # =====
 _BUILDER_DIR = ./.pi-builder
 
-_OS_TARGETS = v0-vga-rpi2 v0-hdmi-rpi2 v0-vga-rpi3 v0-hdmi-rpi3 \
-	v1-vga-rpi2 v1-hdmi-rpi2 v1-vga-rpi3 v1-hdmi-rpi3 v2-hdmi-rpi4 v2-hdmi-zerow
-
 define fetch_version
 $(shell curl --silent "https://pikvm.org/repos/$(BOARD)/latest/$(1)")
 endef
@@ -36,23 +33,12 @@ endef
 all:
 	@ echo "Available commands:"
 	@ echo "    make                # Print this help"
-	@ echo
 	@ echo "    make os             # Build OS with your default config"
-	@ for target in $(_OS_TARGETS); do echo "    make $$target"; done
-	@ echo
 	@ echo "    make shell          # Run Arch-ARM shell"
 	@ echo "    make install        # Install rootfs to partitions on $(CARD)"
 	@ echo "    make scan           # Find all RPi devices in the local network"
 	@ echo "    make clean          # Remove the generated rootfs"
 	@ echo "    make clean-all      # Remove the generated rootfs and pi-builder toolchain"
-
-
-define make_os_target
-$1: BOARD:=$(word 3,$(subst -, ,$1))
-$1: PLATFORM:=$(word 1,$(subst -, ,$1))-$(word 2,$(subst -, ,$1))
-endef
-$(foreach target,$(_OS_TARGETS),$(eval $(call make_os_target,$(target))))
-$(_OS_TARGETS): os
 
 
 shell: $(_BUILDER_DIR)
