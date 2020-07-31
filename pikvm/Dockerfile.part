@@ -17,14 +17,8 @@ RUN systemctl enable kvmd \
 	&& ([[ ! $PLATFORM =~ ^v[01]-.*$ ]] || systemctl mask serial-getty@ttyAMA0.service) \
 	&& ([[ ! $PLATFORM =~ ^v2-.*$ ]] || ( \
 		systemctl enable kvmd-otg \
-		&& systemctl enable getty@ttyGS0.service \
-		&& echo ttyGS0 >> /etc/securetty \
 		&& echo "/dev/mmcblk0p3 /var/lib/kvmd/msd  ext4  nodev,nosuid,noexec,ro,errors=remount-ro,data=journal,X-kvmd.otgmsd-root=/var/lib/kvmd/msd,X-kvmd.otgmsd-user=kvmd  0 0" >> /etc/fstab \
 	))
-
-RUN mkdir /etc/systemd/system/getty@ttyGS0.service.d
-COPY stages/pikvm/ttyGS0.override /etc/systemd/system/getty@ttyGS0.service.d/override.conf
-RUN ([[ $PLATFORM =~ ^v2-.*$ ]] || rm -rf /etc/systemd/system/getty@ttyGS0.service.d)
 
 COPY stages/pikvm/motd /etc/
 
