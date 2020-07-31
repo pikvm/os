@@ -8,7 +8,9 @@ RUN echo $INSTALLATION
 RUN pkg-install \
 	kvmd-platform-$PLATFORM-$BOARD \
 	kvmd-webterm \
-	netctl
+	netctl \
+	parted \
+	e2fsprogs
 
 RUN systemctl enable kvmd \
 	&& systemctl enable kvmd-nginx \

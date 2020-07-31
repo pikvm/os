@@ -1,2 +1,4 @@
 /.pi-builder/
 /config.mk
+/*.img
+/*.img.bz2

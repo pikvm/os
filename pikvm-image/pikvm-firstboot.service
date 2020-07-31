@@ -1,0 +1,13 @@
+[Unit]
+Description=Pi-KVM - firstboot configuration
+After=systemd-modules-load.service
+Before=kvmd-otg.service kvmd-nginx.service kvmd.service sshd.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/_pikvm-firstboot.sh --do-the-thing
+ExecStop=/bin/true
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target
