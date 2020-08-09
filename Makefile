@@ -7,7 +7,8 @@ STAGES ?= __init__ os pikvm-repo watchdog ro no-audit pikvm ssh-keygen __cleanup
 HOSTNAME ?= pikvm
 LOCALE ?= en_US
 TIMEZONE ?= Europe/Moscow
-REPO_URL ?= http://mirror.yandex.ru/archlinux-arm
+#REPO_URL ?= http://mirror.yandex.ru/archlinux-arm
+REPO_URL ?= http://de3.mirror.archlinuxarm.org
 BUILD_OPTS ?=
 
 WIFI_ESSID ?=
@@ -103,11 +104,17 @@ clean-all:
 
 
 image:
+	mkdir -p images
 	sudo bash -x -c ' \
-		dd if=/dev/zero of=$(PLATFORM)-$(BOARD).img bs=512 count=12582912 \
-		&& device=`losetup --find --show $(PLATFORM)-$(BOARD).img` \
+		dd if=/dev/zero of=images/$(PLATFORM)-$(BOARD).img bs=512 count=12582912 \
+		&& device=`losetup --find --show images/$(PLATFORM)-$(BOARD).img` \
 		&& make install CARD=$$device \
 		&& losetup -d $$device \
 	'
-	#bzip2 $(PLATFORM)-$(BOARD).img
-	#sha1sum $(PLATFORM)-$(BOARD).img.bz2
+	bzip2 images/$(PLATFORM)-$(BOARD).img
+	sha1sum images/$(PLATFORM)-$(BOARD).img.bz2 | awk '{print $$1}' > images/$(PLATFORM)-$(BOARD).img.bz2.sha1
+
+
+upload:
+	rsync -rl --progress --delete images root@pikvm.org:/var/www/images2
+	ssh root@pikvm.org "bash -c 'mv /var/www/images2/* /var/www/images/; rmdir /var/www/images2'"
