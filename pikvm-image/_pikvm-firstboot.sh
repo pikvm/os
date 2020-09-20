@@ -15,7 +15,7 @@ kvmd-gencert --do-the-thing
 if grep -q 'X-kvmd\.otgmsd' /etc/fstab; then
 	umount /dev/mmcblk0p3
 	parted /dev/mmcblk0 -a optimal -s resizepart 3 100%
-	mkfs.ext4 -m 0 /dev/mmcblk0p3
+	yes | mkfs.ext4 -m 0 /dev/mmcblk0p3
 	mount /dev/mmcblk0p3
 fi
 
