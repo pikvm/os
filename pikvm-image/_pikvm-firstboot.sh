@@ -1,5 +1,5 @@
 #!/bin/bash
-set -exo pipefail
+set -ex
 if [ "$1" != --do-the-thing ]; then
     exit 1
 fi
@@ -15,7 +15,7 @@ kvmd-gencert --do-the-thing
 if grep -q 'X-kvmd\.otgmsd' /etc/fstab; then
 	umount /dev/mmcblk0p3
 	parted /dev/mmcblk0 -a optimal -s resizepart 3 100%
-	yes | mkfs.ext4 -m 0 /dev/mmcblk0p3
+	yes | mkfs.ext4 -F -m 0 /dev/mmcblk0p3
 	mount /dev/mmcblk0p3
 fi
 
