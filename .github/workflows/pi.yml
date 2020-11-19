@@ -1,0 +1,17 @@
+name: pikvm-os
+
+on: [push, pull_request]
+
+jobs:
+  os:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: os
+        run: make os
+        
+      - name: image
+        run: make image
+    
