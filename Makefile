@@ -1,6 +1,7 @@
 -include config.mk
 
 BOARD ?= rpi4
+ARCH ?= arm
 PLATFORM ?= v2-hdmi
 STAGES ?= __init__ os pikvm-repo watchdog ro no-audit pikvm pikvm-image __cleanup__
 
@@ -10,6 +11,8 @@ TIMEZONE ?= Europe/Moscow
 #REPO_URL ?= http://mirror.yandex.ru/archlinux-arm
 REPO_URL ?= http://de3.mirror.archlinuxarm.org
 BUILD_OPTS ?=
+BUILDER_URL ?= https://github.com/mdevaev/pi-builder
+PIKVM_REPO_URL ?= https://pikvm.org/repos
 
 WIFI_ESSID ?=
 WIFI_PASSWD ?=
@@ -27,7 +30,7 @@ SHELL = /usr/bin/env bash
 _BUILDER_DIR = ./.pi-builder
 
 define fetch_version
-$(shell curl --silent "https://pikvm.org/repos/$(BOARD)/latest/$(1)")
+$(shell curl --silent "$(PIKVM_REPO_URL)/$(BOARD)-$(ARCH)/latest/$(1)")
 endef
 
 
@@ -67,6 +70,7 @@ os: $(_BUILDER_DIR)
 		" \
 		PROJECT=pikvm-os-$(PLATFORM) \
 		BOARD=$(BOARD) \
+		ARCH=$(ARCH) \
 		STAGES='$(STAGES)' \
 		HOSTNAME=$(HOSTNAME) \
 		LOCALE=$(LOCALE) \
@@ -75,7 +79,7 @@ os: $(_BUILDER_DIR)
 
 
 $(_BUILDER_DIR):
-	git clone --depth=1 https://github.com/mdevaev/pi-builder $(_BUILDER_DIR)
+	git clone --depth=1 $(BUILDER_URL) $(_BUILDER_DIR)
 
 
 update: $(_BUILDER_DIR)
@@ -86,6 +90,8 @@ update: $(_BUILDER_DIR)
 install: $(_BUILDER_DIR)
 	make -C $(_BUILDER_DIR) install \
 		CARD=$(CARD) \
+		BOARD=$(BOARD) \
+		ARCH=$(ARCH) \
 		CARD_DATA_FS_TYPE=$(if $(findstring v2-hdmi,$(PLATFORM)),ext4,) \
 		CARD_DATA_FS_FLAGS=-m0
 
@@ -106,13 +112,13 @@ clean-all:
 image:
 	mkdir -p images
 	sudo bash -x -c ' \
-		dd if=/dev/zero of=images/$(PLATFORM)-$(BOARD).img bs=512 count=12582912 \
-		&& device=`losetup --find --show images/$(PLATFORM)-$(BOARD).img` \
+		dd if=/dev/zero of=images/$(PLATFORM)-$(BOARD)-$(ARCH).img bs=512 count=12582912 \
+		&& device=`losetup --find --show images/$(PLATFORM)-$(BOARD)-$(ARCH).img` \
 		&& make install CARD=$$device \
 		&& losetup -d $$device \
 	'
-	bzip2 images/$(PLATFORM)-$(BOARD).img
-	sha1sum images/$(PLATFORM)-$(BOARD).img.bz2 | awk '{print $$1}' > images/$(PLATFORM)-$(BOARD).img.bz2.sha1
+	bzip2 images/$(PLATFORM)-$(BOARD)-$(ARCH).img
+	sha1sum images/$(PLATFORM)-$(BOARD)-$(ARCH).img.bz2 | awk '{print $$1}' > images/$(PLATFORM)-$(BOARD)-$(ARCH).img.bz2.sha1
 
 
 upload:
