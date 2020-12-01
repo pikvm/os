@@ -51,17 +51,4 @@ esac
 
 
 exit
-# remove/comment out exit about for debug logging
-
-# if we got here, unrecognized parameter
-# log it for debugging purposes
-
-# on this device /var/log is ramfs folder2ram
-LOG=/var/log/vcgencmd.log
-LOG=/tmp/vcgencmd.log
-
-
-date >> ${LOG}
-echo PARAM ${*} PARAM >> ${LOG}
-echo '=============' >> ${LOG}
 
