@@ -24,8 +24,11 @@ RUN systemctl enable kvmd \
 
 COPY stages/pikvm/motd /etc/
 
-RUN sed -i -f /usr/share/kvmd/configs.default/os/cmdline/$PLATFORM-$BOARD.sed /boot/cmdline.txt \
+RUN [ ! -f /boot/cmdline.txt ] || sed -i -f /usr/share/kvmd/configs.default/os/cmdline/$PLATFORM-$BOARD.sed /boot/cmdline.txt \
 	&& cp /usr/share/kvmd/configs.default/os/boot-config/$PLATFORM-$BOARD.txt /boot/config.txt
+
+COPY stages/pikvm/vcgencmd /tmp/	
+RUN [ -f /opt/vc/bin/vcgencmd ] || ( mkdir -p /opt/vc/bin && cp -a /tmp/vcgencmd /opt/vc/bin/vcgencmd )
 
 RUN sed -i -e "s/-session   optional   pam_systemd.so/#-session   optional   pam_systemd.so/g" /etc/pam.d/system-login
 

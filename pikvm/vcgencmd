@@ -1,0 +1,67 @@
+#!/bin/sh
+# try and keep this pure bourne shell
+# minimal clone of raspberry tool vcgencmd - for use with Android rpicheck and rock64 SBC
+
+command=$1
+case ${1} in
+        measure_clock)
+                case ${2} in
+                        arm)
+                                # awk is probably overkill....
+				value=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq | awk '{print $1 * 1000}'`
+                                echo 'frequency(45)='${value}
+                                exit
+                        ;;
+                        core)
+                                value=0  # TODO / FIXME
+                                echo 'frequency(1)='${value}
+                                exit
+                        ;;
+                # TODO anything else thrown an error/debug
+                esac
+                exit
+                ;;
+        measure_temp)
+                # awk is probably overkill....
+                value=`cat /sys/class/thermal/thermal_zone0/temp | awk '{print $1 / 1000}'`
+                echo 'temp='${value}"'C"
+                exit
+                ;;
+        measure_volts)
+                case ${2} in
+                        core)
+                                value=1  # TODO / FIXME
+                                echo 'volt='${value}'.0000V'
+                                exit
+                        ;;
+                # TODO anything else thrown an error/debug
+                esac
+                ;;
+	get_throttled)
+		echo 'throttled=0x00000'
+		exit
+		;;                
+        version)
+                echo 'Nov  4 2018 16:31:07'
+                echo 'Copyright (c) 2012 rock64'
+                echo 'version rock64_TODO (clean) (release)'
+                exit
+                ;;
+esac
+
+
+exit
+# remove/comment out exit about for debug logging
+
+# if we got here, unrecognized parameter
+# log it for debugging purposes
+
+# on this device /var/log is ramfs folder2ram
+LOG=/var/log/vcgencmd.log
+LOG=/tmp/vcgencmd.log
+
+
+date >> ${LOG}
+echo PARAM ${*} PARAM >> ${LOG}
+echo '=============' >> ${LOG}
+
