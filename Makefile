@@ -3,6 +3,7 @@
 BOARD ?= rpi4
 ARCH ?= arm
 PLATFORM ?= v2-hdmi
+UBOOT ?=
 STAGES ?= __init__ os pikvm-repo watchdog ro no-audit pikvm pikvm-image __cleanup__
 
 HOSTNAME ?= pikvm
@@ -72,6 +73,7 @@ os: $(_BUILDER_DIR)
 		PROJECT=pikvm-os-$(PLATFORM) \
 		BOARD=$(BOARD) \
 		ARCH=$(ARCH) \
+		BOOT=$(BOOT) \
 		STAGES='$(STAGES)' \
 		HOSTNAME=$(HOSTNAME) \
 		LOCALE=$(LOCALE) \
@@ -95,6 +97,7 @@ install: $(_BUILDER_DIR)
 		CARD=$(CARD) \
 		BOARD=$(BOARD) \
 		ARCH=$(ARCH) \
+		BOOT=$(BOOT) \
 		CARD_DATA_FS_TYPE=$(if $(findstring v2-hdmi,$(PLATFORM)),ext4,) \
 		CARD_DATA_FS_FLAGS=-m0
 
