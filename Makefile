@@ -25,6 +25,7 @@ WEBUI_ADMIN_PASSWD ?= admin
 IPMI_ADMIN_PASSWD ?= admin
 
 CARD ?= /dev/mmcblk0
+IMAGE_FILE ?= images/$(PLATFORM)-$(BOARD)-$(ARCH)$(if $(UBOOT),-$(UBOOT),).img
 
 
 # =====
@@ -73,7 +74,7 @@ os: $(_BUILDER_DIR)
 		PROJECT=pikvm-os-$(PLATFORM) \
 		BOARD=$(BOARD) \
 		ARCH=$(ARCH) \
-		BOOT=$(BOOT) \
+		UBOOT=$(UBOOT) \
 		STAGES='$(STAGES)' \
 		HOSTNAME=$(HOSTNAME) \
 		LOCALE=$(LOCALE) \
@@ -97,7 +98,7 @@ install: $(_BUILDER_DIR)
 		CARD=$(CARD) \
 		BOARD=$(BOARD) \
 		ARCH=$(ARCH) \
-		BOOT=$(BOOT) \
+		UBOOT=$(UBOOT) \
 		CARD_DATA_FS_TYPE=$(if $(findstring v2-hdmi,$(PLATFORM)),ext4,) \
 		CARD_DATA_FS_FLAGS=-m0
 
@@ -118,13 +119,13 @@ clean-all:
 image:
 	mkdir -p images
 	sudo bash -x -c ' \
-		dd if=/dev/zero of=images/$(PLATFORM)-$(BOARD)-$(ARCH).img bs=512 count=12582912 \
-		&& device=`losetup --find --show images/$(PLATFORM)-$(BOARD)-$(ARCH).img` \
+		dd if=/dev/zero of=$(IMAGE_FILE) bs=512 count=12582912 \
+		&& device=`losetup --find --show $(IMAGE_FILE)` \
 		&& make install CARD=$$device \
 		&& losetup -d $$device \
 	'
-	bzip2 images/$(PLATFORM)-$(BOARD)-$(ARCH).img
-	sha1sum images/$(PLATFORM)-$(BOARD)-$(ARCH).img.bz2 | awk '{print $$1}' > images/$(PLATFORM)-$(BOARD)-$(ARCH).img.bz2.sha1
+	bzip2 $(IMAGE_FILE)
+	sha1sum $(IMAGE_FILE).bz2 | awk '{print $$1}' > $(IMAGE_FILE).bz2.sha1
 
 
 upload:
