@@ -121,10 +121,10 @@ image:
 	sudo bash -x -c ' \
 		dd if=/dev/zero of=$(IMAGE_FILE) bs=512 count=12582912 \
 		&& device=`losetup --find --show $(IMAGE_FILE)` \
-		&& make install CARD=$$device \
+		&& make install CARD=$$device BOARD=$(BOARD) ARCH=$(ARCH) UBOOT=$(UBOOT)\
 		&& losetup -d $$device \
 	'
-	bzip2 $(IMAGE_FILE)
+	bzip2 -f $(IMAGE_FILE)
 	sha1sum $(IMAGE_FILE).bz2 | awk '{print $$1}' > $(IMAGE_FILE).bz2.sha1
 
 
