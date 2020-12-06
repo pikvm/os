@@ -3,3 +3,9 @@ RUN rm -f /etc/ssh/ssh_host_* /etc/kvmd/nginx/ssl/*
 COPY stages/pikvm-image/_pikvm-firstboot.sh /usr/local/bin/_pikvm-firstboot.sh
 COPY stages/pikvm-image/pikvm-firstboot.service /etc/systemd/system/pikvm-firstboot.service
 RUN systemctl enable pikvm-firstboot
+
+# https://archlinuxarm.org/platforms/armv8/broadcom/raspberry-pi-4#installation
+RUN [ "$BOARD-$ARCH" != "rpi4-aarch64" ] || ( \
+		sed -i 's/mmcblk0/mmcblk1/g' /etc/fstab \
+		&& sed -i 's/mmcblk0/mmcblk1/g' /usr/local/bin/_pikvm-firstboot.sh \
+	)
