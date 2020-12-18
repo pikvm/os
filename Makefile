@@ -44,6 +44,7 @@ all:
 	@ echo "    make os             # Build OS with your default config"
 	@ echo "    make shell          # Run Arch-ARM shell"
 	@ echo "    make install        # Install rootfs to partitions on $(CARD)"
+	@ echo "    make image          # Create a binary image for burning outside of make install"
 	@ echo "    make scan           # Find all RPi devices in the local network"
 	@ echo "    make clean          # Remove the generated rootfs"
 	@ echo "    make clean-all      # Remove the generated rootfs and pi-builder toolchain"
