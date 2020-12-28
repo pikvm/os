@@ -68,7 +68,7 @@ os: $(_BUILDER_DIR)
 		' \
 		PROJECT=pikvm-os-$(PLATFORM) \
 		BOARD=$(BOARD) \
-		STAGES=$(STAGES) \
+		STAGES='$(STAGES)' \
 		HOSTNAME=$(HOSTNAME) \
 		LOCALE=$(LOCALE) \
 		TIMEZONE=$(TIMEZONE) \
