@@ -53,19 +53,19 @@ os: $(_BUILDER_DIR)
 	cp -a pikvm pikvm-image pikvm-otg-console $(_BUILDER_DIR)/stages
 	make -C $(_BUILDER_DIR) os \
 		NC=$(NC) \
-		BUILD_OPTS=" $(BUILD_OPTS) \
+		BUILD_OPTS=' $(BUILD_OPTS) \
 			--build-arg PLATFORM=$(PLATFORM) \
 			--build-arg USTREAMER_VERSION=$(call fetch_version,ustreamer) \
 			--build-arg KVMD_VERSION=$(call fetch_version,kvmd) \
 			--build-arg KVMD_WEBTERM_VERSION=$(call fetch_version,kvmd-webterm) \
-			--build-arg WIFI_ESSID='$(WIFI_ESSID)' \
-			--build-arg WIFI_PASSWD='$(WIFI_PASSWD)' \
-			--build-arg WIFI_IFACE='$(WIFI_IFACE)' \
-			--build-arg ROOT_PASSWD='$(ROOT_PASSWD)' \
-			--build-arg WEBUI_ADMIN_PASSWD='$(WEBUI_ADMIN_PASSWD)' \
-			--build-arg IPMI_ADMIN_PASSWD='$(IPMI_ADMIN_PASSWD)' \
+			--build-arg WIFI_ESSID=$(WIFI_ESSID) \
+			--build-arg WIFI_PASSWD=$(WIFI_PASSWD) \
+			--build-arg WIFI_IFACE=$(WIFI_IFACE) \
+			--build-arg ROOT_PASSWD=$(ROOT_PASSWD) \
+			--build-arg WEBUI_ADMIN_PASSWD=$(WEBUI_ADMIN_PASSWD) \
+			--build-arg IPMI_ADMIN_PASSWD=$(IPMI_ADMIN_PASSWD) \
 			--build-arg NEW_HTTPS_CERT=$(shell uuidgen) \
-		" \
+		' \
 		PROJECT=pikvm-os-$(PLATFORM) \
 		BOARD=$(BOARD) \
 		STAGES='$(STAGES)' \
