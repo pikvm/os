@@ -104,18 +104,21 @@ clean-all:
 	rm -rf $(_BUILDER_DIR)
 
 
+_IMAGE_DATED := $(PLATFORM)-$(BOARD)-$(shell date +%Y%m%d).img
+_IMAGE_LATEST := $(PLATFORM)-$(BOARD)-latest.img
 image:
 	mkdir -p images
 	sudo bash -x -c ' \
-		dd if=/dev/zero of=images/$(PLATFORM)-$(BOARD).img bs=512 count=12582912 \
-		&& device=`losetup --find --show images/$(PLATFORM)-$(BOARD).img` \
+		dd if=/dev/zero of=images/$(_IMAGE_DATED) bs=512 count=12582912 \
+		&& device=`losetup --find --show images/$(_IMAGE_DATED)` \
 		&& make install CARD=$$device \
 		&& losetup -d $$device \
 	'
-	bzip2 images/$(PLATFORM)-$(BOARD).img
-	sha1sum images/$(PLATFORM)-$(BOARD).img.bz2 | awk '{print $$1}' > images/$(PLATFORM)-$(BOARD).img.bz2.sha1
+	bzip2 images/$(_IMAGE_DATED)
+	sha1sum images/$(_IMAGE_DATED).bz2 | awk '{print $$1}' > images/$(_IMAGE_DATED).bz2.sha1
+	cd images && ln -sf $(_IMAGE_DATED).bz2 $(_IMAGE_LATEST).bz2
+	cd images && ln -sf $(_IMAGE_DATED).bz2.sha1 $(_IMAGE_LATEST).bz2.sha1
 
 
 upload:
-	rsync -rl --progress --delete images root@pikvm.org:/var/www/images2
-	ssh root@pikvm.org "bash -c 'mv /var/www/images2/* /var/www/images/; rmdir /var/www/images2'"
+	rsync -rl --progress --delete images root@pikvm.org:/var/www/
