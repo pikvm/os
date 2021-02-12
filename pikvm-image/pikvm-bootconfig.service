@@ -1,7 +1,7 @@
 [Unit]
 Description=Pi-KVM - Boot configuration
 After=systemd-modules-load.service
-Before=network-pre.target
+Before=network-pre.target pikvm-firstboot.service
 Wants=network-pre.target
 
 [Service]
