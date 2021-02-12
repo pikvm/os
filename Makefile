@@ -114,11 +114,11 @@ image:
 		&& make install CARD=$$device \
 		&& losetup -d $$device \
 	'
-	bzip2 images/$(_IMAGE_DATED)
+	bzip2 -f images/$(_IMAGE_DATED)
 	sha1sum images/$(_IMAGE_DATED).bz2 | awk '{print $$1}' > images/$(_IMAGE_DATED).bz2.sha1
 	cd images && ln -sf $(_IMAGE_DATED).bz2 $(_IMAGE_LATEST).bz2
 	cd images && ln -sf $(_IMAGE_DATED).bz2.sha1 $(_IMAGE_LATEST).bz2.sha1
 
 
 upload:
-	rsync -rl --progress --delete images root@pikvm.org:/var/www/
+	rsync -rl --progress images root@pikvm.org:/var/www/
