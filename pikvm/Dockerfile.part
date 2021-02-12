@@ -13,7 +13,8 @@ RUN pkg-install \
 	tmate \
 	netctl \
 	parted \
-	e2fsprogs
+	e2fsprogs \
+	dos2unix
 
 RUN systemctl enable kvmd \
 	&& systemctl enable kvmd-nginx \
