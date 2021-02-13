@@ -11,6 +11,21 @@ source <(dos2unix < /boot/pikvm.txt)
 
 rw
 
+if [ -n "$FIRSTBOOT" ]; then
+	rm -f /etc/ssh/ssh_host_*
+	ssh-keygen -v -A
+
+	rm -f /etc/kvmd/nginx/ssl/*
+	kvmd-gencert --do-the-thing
+
+	if grep -q 'X-kvmd\.otgmsd' /etc/fstab; then
+		umount /dev/mmcblk0p3
+		parted /dev/mmcblk0 -a optimal -s resizepart 3 100%
+		yes | mkfs.ext4 -F -m 0 /dev/mmcblk0p3
+		mount /dev/mmcblk0p3
+	fi
+fi
+
 if [ -n "$WIFI_ESSID" ]; then
 	WIFI_IFACE="${WIFI_IFACE:-wlan0}"
 	_config="/etc/netctl/$WIFI_IFACE-${WIFI_ESSID/ /_}"

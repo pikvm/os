@@ -1,5 +1,6 @@
 RUN rm -f /etc/ssh/ssh_host_* /etc/kvmd/nginx/ssl/*
 
-COPY stages/pikvm-image/_pikvm-*.sh /usr/local/bin/
-COPY stages/pikvm-image/pikvm-*.service /etc/systemd/system/
-RUN systemctl enable pikvm-firstboot pikvm-bootconfig
+COPY stages/pikvm-image/_pikvm-bootconfig.sh /usr/local/bin/
+COPY stages/pikvm-image/pikvm-bootconfig.service /etc/systemd/system/
+RUN systemctl enable pikvm-bootconfig
+RUN echo "FIRSTBOOT=1" > /boot/pikvm.txt
