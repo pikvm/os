@@ -26,6 +26,14 @@ if [ -n "$FIRSTBOOT" ]; then
 	fi
 fi
 
+# Set the regulatory domain for wifi, if defined.
+if [ -n "${WIRELESS_REGDOM}" ]; then
+	sed --in-place --expression 's/^\(WIRELESS_REGDOM=.*\)$/#\1/' \
+		--expression 's/^#\(WIRELESS_REGDOM="'$WIRELESS_REGDOM'"\)/\1/' \
+		/etc/conf.d/wireless-regdom
+fi
+
+# If the WIFI_ESSID is defined, configure wlan0
 if [ -n "$WIFI_ESSID" ]; then
 	WIFI_IFACE="${WIFI_IFACE:-wlan0}"
 	_config="/etc/netctl/$WIFI_IFACE-${WIFI_ESSID/ /_}"
