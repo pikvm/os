@@ -27,9 +27,10 @@ if [ -n "$FIRSTBOOT" ]; then
 fi
 
 # Set the regulatory domain for wifi, if defined.
-if [ -n "${WIRELESS_REGDOM}" ]; then
-	sed --in-place --expression 's/^\(WIRELESS_REGDOM=.*\)$/#\1/' \
-		--expression 's/^#\(WIRELESS_REGDOM="'$WIRELESS_REGDOM'"\)/\1/' \
+if [ -n "$WIFI_REGDOM" ]; then
+	sed -i \
+			-e 's/^\(WIRELESS_REGDOM=.*\)$/#\1/' \
+			-e 's/^#\(WIRELESS_REGDOM="'$WIFI_REGDOM'"\)/\1/' \
 		/etc/conf.d/wireless-regdom
 fi
 
