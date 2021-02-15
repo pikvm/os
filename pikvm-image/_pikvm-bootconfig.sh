@@ -16,7 +16,9 @@ if [ -n "$FIRSTBOOT" ]; then
 	ssh-keygen -v -A
 
 	rm -f /etc/kvmd/nginx/ssl/*
+	rm -f /etc/kvmd/vnc/ssl/*
 	kvmd-gencert --do-the-thing
+	kvmd-gencert --do-the-thing --vnc
 
 	if grep -q 'X-kvmd\.otgmsd' /etc/fstab; then
 		umount /dev/mmcblk0p3
