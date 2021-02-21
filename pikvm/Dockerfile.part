@@ -34,7 +34,7 @@ RUN sed -i -f /usr/share/kvmd/configs.default/os/cmdline/$PLATFORM-$BOARD.sed /b
 
 RUN sed -i -e "s/-session   optional   pam_systemd.so/#-session   optional   pam_systemd.so/g" /etc/pam.d/system-login
 
-RUN pkg-install linux-firmware=20210213.646f159-1
+RUN pkg-install linux-firmware=20210221.b79d239-1
 
 ARG WIFI_ESSID
 ARG WIFI_PASSWD
