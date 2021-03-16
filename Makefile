@@ -87,7 +87,7 @@ update: $(_BUILDER_DIR)
 install: $(_BUILDER_DIR)
 	make -C $(_BUILDER_DIR) install \
 		CARD=$(CARD) \
-		CARD_DATA_FS_TYPE=$(if $(findstring v2-hdmi,$(PLATFORM)),ext4,) \
+		CARD_DATA_FS_TYPE=$(if $(findstring v2,$(PLATFORM))$(findstring v3,$(PLATFORM)),ext4,) \
 		CARD_DATA_FS_FLAGS=-m0
 
 
