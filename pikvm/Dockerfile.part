@@ -5,7 +5,7 @@ ARG KVMD_WEBTERM_VERSION
 ENV INSTALLATION $PLATFORM $USTREAMER_VERSION $KVMD_VERSION $KVMD_WEBTERM_VERSION
 RUN echo $INSTALLATION
 
-RUN pacman --noconfirm -Syu \
+RUN pacman --noconfirm --ask=4 -Syu \
 	&& case "$ARCH" in \
 		arm) \
 			case "$BOARD" in \
@@ -15,7 +15,6 @@ RUN pacman --noconfirm -Syu \
 		aarch64) true;; \
 		*) echo "Unknown architecture: $ARCH"; exit 1;; \
 	esac \
-	&& pacman --noconfirm -Sc \
 	&& (mv /boot/config.txt.pacsave /boot/config.txt || true) \
 	&& (mv /boot/cmdline.txt.pacsave /boot/cmdline.txt || true) \
 	&& rm -rf /var/cache/pacman/pkg/* /boot/*.pacnew
