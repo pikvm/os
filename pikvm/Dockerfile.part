@@ -5,11 +5,11 @@ ARG KVMD_WEBTERM_VERSION
 ENV INSTALLATION $PLATFORM $USTREAMER_VERSION $KVMD_VERSION $KVMD_WEBTERM_VERSION
 RUN echo $INSTALLATION
 
-RUN pacman --noconfirm --ask=4 -Syu \
+RUN pacman --noconfirm -Syu \
 	&& case "$ARCH" in \
 		arm) \
 			case "$BOARD" in \
-				rpi|rpi2|rpi3|zero|zerow) yes | pacman --needed -S pikvm-os-raspberrypi;; \
+				rpi|rpi2|rpi3|zero|zerow) yes | LC_ALL=en_US.UTF-8 pacman --needed -S pikvm-os-raspberrypi;; \
 				rpi4) yes | pacman -S pikvm-os-raspberrypi4;; \
 			esac;; \
 		aarch64) true;; \
