@@ -12,6 +12,9 @@ source <(dos2unix < /boot/pikvm.txt)
 rw
 
 if [ -n "$FIRSTBOOT" ]; then
+	echo -n > /etc/machine-id
+	systemd-machine-id-setup
+
 	rm -f /etc/ssh/ssh_host_*
 	ssh-keygen -v -A
 
