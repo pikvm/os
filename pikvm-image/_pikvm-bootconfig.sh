@@ -13,7 +13,7 @@ rw
 
 if [ -n "$FIRSTBOOT" ]; then
 	echo -n > /etc/machine-id
-	systemd-machine-id-setup
+	systemd-machine-id-setup || true
 
 	rm -f /etc/ssh/ssh_host_*
 	ssh-keygen -v -A
