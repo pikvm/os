@@ -13,7 +13,7 @@ rw
 
 if [ -n "$FIRSTBOOT" ]; then
 	( \
-		umount /etc/machine-id \
+		(umount /etc/machine-id || true) \
 		&& echo -n > /etc/machine-id \
 		&& systemd-machine-id-setup \
 	) || true
