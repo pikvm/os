@@ -1,0 +1,10 @@
+[Match]
+Name=eth0
+
+[Network]
+DHCP=yes
+DNSSEC=no
+
+# Use same IP by forcing to use MAC address for clientID
+[DHCP]
+ClientIdentifier=mac
