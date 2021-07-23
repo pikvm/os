@@ -1,0 +1,13 @@
+RUN pkg-install \
+	xorg-server \
+	xorg-xinit \
+	xf86-video-fbturbo-git \
+	xdialog \
+	xterm \
+	alsa-utils
+
+ADD stages/pikvm-test/files/ /
+
+RUN sed -i'' -e '/^hdmi_.*$/d' /boot/config.txt && \
+	sed -i'' -e '/^initramfs/r /boot/config_hdmi.txt' /boot/config.txt && \
+	rm /boot/config_hdmi.txt
