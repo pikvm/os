@@ -1,0 +1,4 @@
+# For testing purpose only
+kvmd:
+    auth:
+        enabled: false
