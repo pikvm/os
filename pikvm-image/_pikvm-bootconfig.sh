@@ -32,6 +32,9 @@ if [ -n "$FIRSTBOOT" ]; then
 		yes | mkfs.ext4 -F -m 0 /dev/mmcblk0p3
 		mount /dev/mmcblk0p3
 	fi
+
+	# fc-cache is required for installed X server
+	which fc-cache && fc-cache || true
 fi
 
 # Set the regulatory domain for wifi, if defined.
