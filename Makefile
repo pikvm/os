@@ -110,7 +110,7 @@ _IMAGE_LATEST := $(PLATFORM)-$(BOARD)-latest.img
 image:
 	mkdir -p images
 	sudo bash -x -c ' \
-		dd if=/dev/zero of=images/$(_IMAGE_DATED) bs=512 count=12582912 \
+		truncate images/$(_IMAGE_DATED) -s 6G \
 		&& device=`losetup --find --show images/$(_IMAGE_DATED)` \
 		&& $(MAKE) install CARD=$$device \
 		&& losetup -d $$device \
