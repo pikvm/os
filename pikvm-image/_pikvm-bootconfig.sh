@@ -63,3 +63,5 @@ fi
 
 rm -f /boot/pikvm.txt
 ro
+
+[ -n "$REBOOT" ] && reboot
