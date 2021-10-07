@@ -1,7 +1,0 @@
-
-hdmi_force_hotplug=1
-hdmi_drive=2
-hdmi_group=2
-hdmi_cvt=1920 1080 50 3 0 0 1
-hdmi_mode=87
-hdmi_force_mode=1
