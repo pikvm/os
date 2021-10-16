@@ -59,7 +59,15 @@ IP=dhcp
 Key='$WIFI_PASSWD'
 end_wifi_config
 	systemctl enable "netctl-auto@${WIFI_IFACE}.service" || true
+	REBOOT=1
 fi
 
 rm -f /boot/pikvm.txt
 ro
+
+if [ -n "$REBOOT" ]; then
+	echo "pikvm-bootconfig: Reboot after 5 seconds" | tee /dev/kmsg
+	sleep 2
+	reboot
+	sleep 3
+fi
