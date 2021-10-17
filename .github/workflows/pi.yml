@@ -1,17 +1,36 @@
-name: pikvm-os
+name: Build OS Images
 
-on: [push, pull_request]
+on: workflow_dispatch
 
 jobs:
-  os:
+  v3-hdmi-rpi4:
     runs-on: ubuntu-latest
+    env:
+      DEPLOY_KEY: "${{secrets.DEPLOY_KEY}}"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        
-      - name: os
-        run: make os
-        
-      - name: image
-        run: make image
-    
+
+      - name: Installing rsync
+        run: "sudo apt-get install -y rsync"
+
+      - name: Creating SSH directory
+        run: "mkdir ~/.ssh && chmod 700 ~/.ssh"
+
+      - name: Adding files.pikvm.org as known host
+        run: "ssh-keyscan -H files.pikvm.org >> ~/.ssh/known_hosts"
+
+      - name: Adding DEPLOY_KEY
+        run: "echo \"$DEPLOY_KEY\" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa"
+
+      - name: Creating config.mk
+        run: "sh -c 'echo \"BOARD=rpi4\\nPLATFORM=v3-hdmi\\nDEPLOY_USER=data\" > config.mk; cat config.mk'"
+
+      - name: Building OS
+        run: "make os NC=1"
+
+      - name: Making image
+        run: "make image"
+
+      - name: Uploading image
+        run: "make upload"

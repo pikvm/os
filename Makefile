@@ -21,6 +21,8 @@ IPMI_ADMIN_PASSWD ?= admin
 
 CARD ?= /dev/mmcblk0
 
+DEPLOY_USER ?= root
+
 
 # =====
 SHELL = /usr/bin/env bash
@@ -122,4 +124,4 @@ image:
 
 
 upload:
-	rsync -rl --progress images/ root@files.pikvm.org:/var/www/files.pikvm.org/images
+	rsync -rl --progress images/ $(DEPLOY_USER)@files.pikvm.org:/var/www/files.pikvm.org/images
