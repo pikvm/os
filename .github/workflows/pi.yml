@@ -7,7 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DEPLOY_KEY: "${{secrets.DEPLOY_KEY}}"
-    steps:
+      BOARD: rpi4
+      PLATFORM: v3-hdmi
+    steps: &steps_pattern
       - name: Checkout
         uses: actions/checkout@v2
 
@@ -24,7 +26,7 @@ jobs:
         run: "echo \"$DEPLOY_KEY\" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa"
 
       - name: Creating config.mk
-        run: "sh -c 'echo \"BOARD=rpi4\\nPLATFORM=v3-hdmi\\nDEPLOY_USER=data\" > config.mk; cat config.mk'"
+        run: "echo \"BOARD=$BOARD\\nPLATFORM=$PLATFORM\\nDEPLOY_USER=data\" > config.mk && cat config.mk"
 
       - name: Building OS
         run: "make os NC=1"
@@ -34,3 +36,27 @@ jobs:
 
       - name: Uploading image
         run: "make upload"
+
+  v2-hdmi-rpi4:
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_KEY: "${{secrets.DEPLOY_KEY}}"
+      BOARD: rpi4
+      PLATFORM: v2-hdmi
+    steps: *steps_pattern
+
+  v2-hdmiusb-rpi4:
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_KEY: "${{secrets.DEPLOY_KEY}}"
+      BOARD: rpi4
+      PLATFORM: v2-hdmiusb
+    steps: *steps_pattern
+
+  v2-hdmi-zerow:
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_KEY: "${{secrets.DEPLOY_KEY}}"
+      BOARD: zerow
+      PLATFORM: v2-hdmi
+    steps: *steps_pattern
