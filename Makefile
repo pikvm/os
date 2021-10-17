@@ -122,5 +122,4 @@ image:
 
 
 upload:
-	rsync -rl --progress images/ root@pikvm.org:/var/www/images
 	rsync -rl --progress images/ root@files.pikvm.org:/var/www/files.pikvm.org/images
