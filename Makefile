@@ -27,7 +27,7 @@ SHELL = /usr/bin/env bash
 _BUILDER_DIR = ./.pi-builder
 
 define fetch_version
-$(shell curl --silent "https://pikvm.org/repos/$(BOARD)/latest/$(1)")
+$(shell curl --silent "https://files.pikvm.org/repos/arch/$(BOARD)/latest/$(1)")
 endef
 
 
@@ -122,4 +122,5 @@ image:
 
 
 upload:
-	rsync -rl --progress images root@pikvm.org:/var/www/
+	rsync -rl --progress images/ root@pikvm.org:/var/www/images
+	rsync -rl --progress images/ root@files.pikvm.org:/var/www/files.pikvm.org/images
