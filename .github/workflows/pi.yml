@@ -17,7 +17,7 @@ jobs:
         run: |
           mkdir ~/.ssh
           chmod 700 ~/.ssh
-          ssh-keyscan -H files.pikvm.org >> ~/.ssh/known_hosts
+          ssh-keyscan -H files.pikvm.org > ~/.ssh/known_hosts
           echo "$DEPLOY_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
@@ -26,7 +26,6 @@ jobs:
           echo "BOARD=$BOARD" > config.mk
           echo "PLATFORM=$PLATFORM" >> config.mk
           echo "DEPLOY_USER=data" >> config.mk
-          cat config.mk
 
       - name: Building OS
         run: make os NC=1
@@ -52,7 +51,7 @@ jobs:
         run: |
           mkdir ~/.ssh
           chmod 700 ~/.ssh
-          ssh-keyscan -H files.pikvm.org >> ~/.ssh/known_hosts
+          ssh-keyscan -H files.pikvm.org > ~/.ssh/known_hosts
           echo "$DEPLOY_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
@@ -61,7 +60,6 @@ jobs:
           echo "BOARD=$BOARD" > config.mk
           echo "PLATFORM=$PLATFORM" >> config.mk
           echo "DEPLOY_USER=data" >> config.mk
-          cat config.mk
 
       - name: Building OS
         run: make os NC=1
@@ -87,7 +85,7 @@ jobs:
         run: |
           mkdir ~/.ssh
           chmod 700 ~/.ssh
-          ssh-keyscan -H files.pikvm.org >> ~/.ssh/known_hosts
+          ssh-keyscan -H files.pikvm.org > ~/.ssh/known_hosts
           echo "$DEPLOY_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
@@ -96,7 +94,6 @@ jobs:
           echo "BOARD=$BOARD" > config.mk
           echo "PLATFORM=$PLATFORM" >> config.mk
           echo "DEPLOY_USER=data" >> config.mk
-          cat config.mk
 
       - name: Building OS
         run: make os NC=1
@@ -122,7 +119,7 @@ jobs:
         run: |
           mkdir ~/.ssh
           chmod 700 ~/.ssh
-          ssh-keyscan -H files.pikvm.org >> ~/.ssh/known_hosts
+          ssh-keyscan -H files.pikvm.org > ~/.ssh/known_hosts
           echo "$DEPLOY_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
@@ -131,7 +128,6 @@ jobs:
           echo "BOARD=$BOARD" > config.mk
           echo "PLATFORM=$PLATFORM" >> config.mk
           echo "DEPLOY_USER=data" >> config.mk
-          cat config.mk
 
       - name: Building OS
         run: make os NC=1
