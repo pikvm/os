@@ -9,7 +9,7 @@ jobs:
       DEPLOY_KEY: "${{secrets.DEPLOY_KEY}}"
       BOARD: rpi4
       PLATFORM: v3-hdmi
-    steps: &steps_pattern
+    steps:
       - name: Checkout
         uses: actions/checkout@v2
 
@@ -43,7 +43,33 @@ jobs:
       DEPLOY_KEY: "${{secrets.DEPLOY_KEY}}"
       BOARD: rpi4
       PLATFORM: v2-hdmi
-    steps: *steps_pattern
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Installing rsync
+        run: "sudo apt-get install -y rsync"
+
+      - name: Creating SSH directory
+        run: "mkdir ~/.ssh && chmod 700 ~/.ssh"
+
+      - name: Adding files.pikvm.org as known host
+        run: "ssh-keyscan -H files.pikvm.org >> ~/.ssh/known_hosts"
+
+      - name: Adding DEPLOY_KEY
+        run: "echo \"$DEPLOY_KEY\" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa"
+
+      - name: Creating config.mk
+        run: "echo \"BOARD=$BOARD\\nPLATFORM=$PLATFORM\\nDEPLOY_USER=data\" > config.mk && cat config.mk"
+
+      - name: Building OS
+        run: "make os NC=1"
+
+      - name: Making image
+        run: "make image"
+
+      - name: Uploading image
+        run: "make upload"
 
   v2-hdmiusb-rpi4:
     runs-on: ubuntu-latest
@@ -51,7 +77,33 @@ jobs:
       DEPLOY_KEY: "${{secrets.DEPLOY_KEY}}"
       BOARD: rpi4
       PLATFORM: v2-hdmiusb
-    steps: *steps_pattern
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Installing rsync
+        run: "sudo apt-get install -y rsync"
+
+      - name: Creating SSH directory
+        run: "mkdir ~/.ssh && chmod 700 ~/.ssh"
+
+      - name: Adding files.pikvm.org as known host
+        run: "ssh-keyscan -H files.pikvm.org >> ~/.ssh/known_hosts"
+
+      - name: Adding DEPLOY_KEY
+        run: "echo \"$DEPLOY_KEY\" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa"
+
+      - name: Creating config.mk
+        run: "echo \"BOARD=$BOARD\\nPLATFORM=$PLATFORM\\nDEPLOY_USER=data\" > config.mk && cat config.mk"
+
+      - name: Building OS
+        run: "make os NC=1"
+
+      - name: Making image
+        run: "make image"
+
+      - name: Uploading image
+        run: "make upload"
 
   v2-hdmi-zerow:
     runs-on: ubuntu-latest
@@ -59,4 +111,30 @@ jobs:
       DEPLOY_KEY: "${{secrets.DEPLOY_KEY}}"
       BOARD: zerow
       PLATFORM: v2-hdmi
-    steps: *steps_pattern
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Installing rsync
+        run: "sudo apt-get install -y rsync"
+
+      - name: Creating SSH directory
+        run: "mkdir ~/.ssh && chmod 700 ~/.ssh"
+
+      - name: Adding files.pikvm.org as known host
+        run: "ssh-keyscan -H files.pikvm.org >> ~/.ssh/known_hosts"
+
+      - name: Adding DEPLOY_KEY
+        run: "echo \"$DEPLOY_KEY\" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa"
+
+      - name: Creating config.mk
+        run: "echo \"BOARD=$BOARD\\nPLATFORM=$PLATFORM\\nDEPLOY_USER=data\" > config.mk && cat config.mk"
+
+      - name: Building OS
+        run: "make os NC=1"
+
+      - name: Making image
+        run: "make image"
+
+      - name: Uploading image
+        run: "make upload"
