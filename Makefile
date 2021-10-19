@@ -2,7 +2,7 @@
 
 BOARD ?= rpi4
 PLATFORM ?= v2-hdmi
-STAGES ?= __init__ os pikvm-repo watchdog ro no-audit pikvm pikvm-image __cleanup__
+STAGES ?= __init__ os pikvm-repo watchdog ro no-audit pikvm __cleanup__
 
 HOSTNAME ?= pikvm
 LOCALE ?= en_US
@@ -10,10 +10,6 @@ TIMEZONE ?= Europe/Moscow
 #REPO_URL ?= http://mirror.yandex.ru/archlinux-arm
 REPO_URL ?= http://de3.mirror.archlinuxarm.org
 BUILD_OPTS ?=
-
-WIFI_ESSID ?=
-WIFI_PASSWD ?=
-WIFI_IFACE ?= wlan0
 
 ROOT_PASSWD ?= root
 WEBUI_ADMIN_PASSWD ?= admin
@@ -51,8 +47,8 @@ shell: $(_BUILDER_DIR)
 
 
 os: $(_BUILDER_DIR)
-	rm -rf $(_BUILDER_DIR)/stages/{pikvm,pikvm-image,pikvm-otg-console}
-	cp -a pikvm pikvm-image pikvm-otg-console $(_BUILDER_DIR)/stages
+	rm -rf $(_BUILDER_DIR)/stages/{pikvm,pikvm-otg-console}
+	cp -a pikvm pikvm-otg-console $(_BUILDER_DIR)/stages
 	make -C $(_BUILDER_DIR) os \
 		NC=$(NC) \
 		BUILD_OPTS=' $(BUILD_OPTS) \
@@ -60,13 +56,9 @@ os: $(_BUILDER_DIR)
 			--build-arg USTREAMER_VERSION=$(call fetch_version,ustreamer) \
 			--build-arg KVMD_VERSION=$(call fetch_version,kvmd) \
 			--build-arg KVMD_WEBTERM_VERSION=$(call fetch_version,kvmd-webterm) \
-			--build-arg WIFI_ESSID=$(WIFI_ESSID) \
-			--build-arg WIFI_PASSWD=$(WIFI_PASSWD) \
-			--build-arg WIFI_IFACE=$(WIFI_IFACE) \
 			--build-arg ROOT_PASSWD=$(ROOT_PASSWD) \
 			--build-arg WEBUI_ADMIN_PASSWD=$(WEBUI_ADMIN_PASSWD) \
 			--build-arg IPMI_ADMIN_PASSWD=$(IPMI_ADMIN_PASSWD) \
-			--build-arg NEW_HTTPS_CERT=$(shell uuidgen) \
 		' \
 		PROJECT=pikvm-os-$(PLATFORM) \
 		BOARD=$(BOARD) \

@@ -17,5 +17,6 @@
 
     Useful links:
       * https://pikvm.org
-      * https://wiki.archlinux.org/index.php/Network_configuration
+      * https://docs.pikvm.org
+      * https://wiki.archlinux.org/title/systemd-networkd
 
