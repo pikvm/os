@@ -43,13 +43,13 @@ all:
 
 
 shell: $(_BUILDER_DIR)
-	make -C $(_BUILDER_DIR) shell
+	$(MAKE) -C $(_BUILDER_DIR) shell
 
 
 os: $(_BUILDER_DIR)
 	rm -rf $(_BUILDER_DIR)/stages/{pikvm,pikvm-otg-console}
 	cp -a pikvm pikvm-otg-console $(_BUILDER_DIR)/stages
-	make -C $(_BUILDER_DIR) os \
+	$(MAKE) -C $(_BUILDER_DIR) os \
 		NC=$(NC) \
 		BUILD_OPTS=' $(BUILD_OPTS) \
 			--build-arg PLATFORM=$(PLATFORM) \
@@ -79,7 +79,7 @@ update: $(_BUILDER_DIR)
 
 
 install: $(_BUILDER_DIR)
-	make -C $(_BUILDER_DIR) install \
+	$(MAKE) -C $(_BUILDER_DIR) install \
 		CARD=$(CARD) \
 		CARD_DATA_FS_TYPE=$(if $(findstring v2,$(PLATFORM))$(findstring v3,$(PLATFORM)),ext4,) \
 		CARD_DATA_FS_FLAGS=-m0 \
@@ -87,15 +87,15 @@ install: $(_BUILDER_DIR)
 
 
 scan: $(_BUILDER_DIR)
-	make -C $(_BUILDER_DIR) scan
+	$(MAKE) -C $(_BUILDER_DIR) scan
 
 
 clean: $(_BUILDER_DIR)
-	make -C $(_BUILDER_DIR) clean
+	$(MAKE) -C $(_BUILDER_DIR) clean
 
 
 clean-all:
-	- make -C $(_BUILDER_DIR) clean-all
+	- $(MAKE) -C $(_BUILDER_DIR) clean-all
 	rm -rf $(_BUILDER_DIR)
 
 
@@ -104,9 +104,9 @@ _IMAGE_LATEST := $(PLATFORM)-$(BOARD)-latest.img
 image:
 	mkdir -p images
 	sudo bash -x -c ' \
-		dd if=/dev/zero of=images/$(_IMAGE_DATED) bs=512 count=12582912 \
+		truncate images/$(_IMAGE_DATED) -s 6G \
 		&& device=`losetup --find --show images/$(_IMAGE_DATED)` \
-		&& make install CARD=$$device \
+		&& $(MAKE) install CARD=$$device \
 		&& losetup -d $$device \
 	'
 	bzip2 -f images/$(_IMAGE_DATED)
