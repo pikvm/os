@@ -1,0 +1,51 @@
+name: __os__
+on:
+  workflow_call:
+    inputs:
+      BOARD:
+        required: true
+        type: string
+      PLATFORM:
+        required: true
+        type: string
+    secrets:
+      DEPLOY_KEY:
+        required: true
+
+
+jobs:
+  os:
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_KEY: "${{secrets.DEPLOY_KEY}}"
+      BOARD: "${{inputs.BOARD}}"
+      PLATFORM: "${{inputs.PLATFORM}}"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Installing dependencies
+        run: sudo apt-get install -y rsync p7zip-full
+
+      - name: Configuring SSH
+        run: |
+          mkdir ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan -H files.pikvm.org > ~/.ssh/known_hosts
+          echo "$DEPLOY_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Creating config.mk
+        run: |
+          echo "BOARD=$BOARD" > config.mk
+          echo "PLATFORM=$PLATFORM" >> config.mk
+          echo "DEPLOY_USER=data" >> config.mk
+
+      - name: Building OS
+        run: make os NC=1
+
+      - name: Making image
+        run: make image ZIP=1
+
+      - name: Uploading image
+        run: make upload

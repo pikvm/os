@@ -102,6 +102,7 @@ clean-all:
 _IMAGE_DATED := $(PLATFORM)-$(BOARD)-$(shell date +%Y%m%d).img
 _IMAGE_LATEST := $(PLATFORM)-$(BOARD)-latest.img
 image:
+	which xz
 	mkdir -p images
 	sudo bash -x -c ' \
 		truncate images/$(_IMAGE_DATED) -s 6G \
@@ -109,10 +110,11 @@ image:
 		&& $(MAKE) install CARD=$$device \
 		&& losetup -d $$device \
 	'
-	bzip2 -f images/$(_IMAGE_DATED)
-	sha1sum images/$(_IMAGE_DATED).bz2 | awk '{print $$1}' > images/$(_IMAGE_DATED).bz2.sha1
-	cd images && ln -sf $(_IMAGE_DATED).bz2 $(_IMAGE_LATEST).bz2
-	cd images && ln -sf $(_IMAGE_DATED).bz2.sha1 $(_IMAGE_LATEST).bz2.sha1
+	sudo chown $(shell id -u):$(shell id -g) images/$(_IMAGE_DATED)
+	xz --compress images/$(_IMAGE_DATED)
+	sha1sum images/$(_IMAGE_DATED).xz | awk '{print $$1}' > images/$(_IMAGE_DATED).xz.sha1
+	cd images && ln -sf $(_IMAGE_DATED).xz $(_IMAGE_LATEST).xz
+	cd images && ln -sf $(_IMAGE_DATED).xz.sha1 $(_IMAGE_LATEST).xz.sha1
 
 
 upload:
