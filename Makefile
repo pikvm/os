@@ -111,7 +111,7 @@ image:
 		&& losetup -d $$device \
 	'
 	sudo chown $(shell id -u):$(shell id -g) images/$(_IMAGE_DATED)
-	xz --compress images/$(_IMAGE_DATED)
+	xz -9 --compress images/$(_IMAGE_DATED)
 	sha1sum images/$(_IMAGE_DATED).xz | awk '{print $$1}' > images/$(_IMAGE_DATED).xz.sha1
 	cd images && ln -sf $(_IMAGE_DATED).xz $(_IMAGE_LATEST).xz
 	cd images && ln -sf $(_IMAGE_DATED).xz.sha1 $(_IMAGE_LATEST).xz.sha1
