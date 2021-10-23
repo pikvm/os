@@ -22,7 +22,7 @@ DEPLOY_USER ?= root
 
 # =====
 SHELL = /usr/bin/env bash
-_BUILDER_DIR = ./.pi-builder
+_BUILDER_DIR = ./.pi-builder/$(PLATFORM)-$(BOARD)
 
 define fetch_version
 $(shell curl --silent "https://files.pikvm.org/repos/arch/$(BOARD)/latest/$(1)")
@@ -70,6 +70,7 @@ os: $(_BUILDER_DIR)
 
 
 $(_BUILDER_DIR):
+	mkdir -p `dirname $(_BUILDER_DIR)`
 	git clone --depth=1 https://github.com/mdevaev/pi-builder $(_BUILDER_DIR)
 
 
@@ -97,6 +98,7 @@ clean: $(_BUILDER_DIR)
 clean-all:
 	- $(MAKE) -C $(_BUILDER_DIR) clean-all
 	rm -rf $(_BUILDER_DIR)
+	- rmdir `dirname $(_BUILDER_DIR)`
 
 
 _IMAGE_DATED := $(PLATFORM)-$(BOARD)-$(shell date +%Y%m%d).img
