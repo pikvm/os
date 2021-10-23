@@ -20,12 +20,10 @@ jobs:
       DEPLOY_KEY: "${{secrets.DEPLOY_KEY}}"
       BOARD: "${{inputs.BOARD}}"
       PLATFORM: "${{inputs.PLATFORM}}"
+      TERM: xterm
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Installing dependencies
-        run: sudo apt-get install -y rsync p7zip-full
 
       - name: Configuring SSH
         run: |
