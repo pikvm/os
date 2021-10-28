@@ -68,4 +68,4 @@ RUN sed -i "\$d" /etc/kvmd/ipmipasswd \
 RUN rm -f /etc/ssh/ssh_host_* /etc/kvmd/nginx/ssl/* /etc/kvmd/vnc/ssl/*
 
 RUN systemctl enable kvmd-bootconfig
-RUN echo "FIRSTBOOT=1" > /boot/pikvm.txt
+RUN echo "FIRST_BOOT=1" > /boot/pikvm.txt
