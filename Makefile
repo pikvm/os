@@ -8,7 +8,7 @@ HOSTNAME ?= pikvm
 LOCALE ?= en_US
 TIMEZONE ?= Europe/Moscow
 #REPO_URL ?= http://mirror.yandex.ru/archlinux-arm
-REPO_URL ?= http://de3.mirror.archlinuxarm.org
+REPO_URL ?= http://mirror.archlinuxarm.org
 BUILD_OPTS ?=
 
 ROOT_PASSWD ?= root
