@@ -7,4 +7,6 @@
 
 [![os](https://github.com/pikvm/os/actions/workflows/v2-hdmi-zerow.yml/badge.svg)](https://github.com/pikvm/os/actions/workflows/v2-hdmi-zerow.yml)
 
+[![os](https://github.com/pikvm/os/actions/workflows/v2-hdmi-zero2w.yml/badge.svg)](https://github.com/pikvm/os/actions/workflows/v2-hdmi-zero2w.yml)
+
 The built images are published here: https://files.pikvm.org

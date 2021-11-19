@@ -1,0 +1,12 @@
+name: v2-hdmi-zero2w
+on: workflow_dispatch
+
+
+jobs:
+  os:
+    uses: pikvm/os/.github/workflows/os.yml@master
+    with:
+      BOARD: zero2w
+      PLATFORM: v2-hdmi
+    secrets:
+      DEPLOY_KEY: "${{secrets.DEPLOY_KEY}}"

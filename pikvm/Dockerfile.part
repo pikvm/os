@@ -9,7 +9,7 @@ RUN pacman --noconfirm --ask=4 -Syu \
 	&& case "$ARCH" in \
 		arm) \
 			case "$BOARD" in \
-				rpi|rpi2|rpi3|zero|zerow) yes | pacman --needed -S pikvm-os-raspberrypi;; \
+				rpi|rpi2|rpi3|zero|zerow|zero2w) yes | pacman --needed -S pikvm-os-raspberrypi;; \
 				rpi4) yes | pacman -S pikvm-os-raspberrypi4;; \
 			esac;; \
 		aarch64) true;; \
