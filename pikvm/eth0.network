@@ -5,6 +5,8 @@ Name=eth0
 DHCP=yes
 DNSSEC=no
 
-# Use same IP by forcing to use MAC address for clientID
 [DHCP]
+# Use same IP by forcing to use MAC address for clientID
 ClientIdentifier=mac
+# https://github.com/pikvm/pikvm/issues/583
+RouteMetric=10
