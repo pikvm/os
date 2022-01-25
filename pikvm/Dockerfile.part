@@ -24,6 +24,8 @@ RUN pkg-install \
 	kvmd-webterm \
 	kvmd-oled \
 	kvmd-fan \
+	tesseract \
+	tesseract-data-eng \
 	wiringpi \
 	pastebinit \
 	dhclient \
