@@ -1,0 +1,15 @@
+name: v3-hdmi-rpi4-box
+on: workflow_dispatch
+
+
+jobs:
+  os:
+    uses: pikvm/os/.github/workflows/os.yml@master
+    with:
+      BOARD: rpi4
+      PLATFORM: v3-hdmi
+      SUFFIX: -box
+      OLED: 1
+      FAN: 1
+    secrets:
+      DEPLOY_KEY: "${{secrets.DEPLOY_KEY}}"

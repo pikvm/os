@@ -8,6 +8,18 @@ on:
       PLATFORM:
         required: true
         type: string
+      SUFFIX:
+        required: false
+        type: string
+        default:
+      OLED:
+        required: false
+        type: string
+        default:
+      FAN:
+        required: false
+        type: string
+        default:
     secrets:
       DEPLOY_KEY:
         required: true
@@ -20,6 +32,9 @@ jobs:
       DEPLOY_KEY: "${{secrets.DEPLOY_KEY}}"
       BOARD: "${{inputs.BOARD}}"
       PLATFORM: "${{inputs.PLATFORM}}"
+      SUFFIX: "${{inputs.SUFFIX}}"
+      OLED: "${{inputs.OLED}}"
+      FAN: "${{inputs.FAN}}"
       TERM: xterm
     steps:
       - name: Checkout
@@ -38,6 +53,9 @@ jobs:
           echo "BOARD=$BOARD" > config.mk
           echo "PLATFORM=$PLATFORM" >> config.mk
           echo "DEPLOY_USER=data" >> config.mk
+          echo "SUFFIX=$SUFFIX" >> config.mk
+          echo "OLED=$OLED" >> config.mk
+          echo "FAN=$FAN" >> config.mk
 
       - name: Building OS
         run: make os NC=1

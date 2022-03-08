@@ -2,6 +2,7 @@
 
 BOARD ?= rpi4
 PLATFORM ?= v2-hdmi
+SUFFIX ?=
 STAGES ?= __init__ os pikvm-repo watchdog ro no-audit pikvm __cleanup__
 
 HOSTNAME ?= pikvm
@@ -22,9 +23,13 @@ DEPLOY_USER ?= root
 
 # =====
 SHELL = /usr/bin/env bash
-_BUILDER_DIR = ./.pi-builder/$(PLATFORM)-$(BOARD)
+_BUILDER_DIR = ./.pi-builder/$(PLATFORM)-$(BOARD)$(SUFFIX)
 
-define fetch_version
+define optbool
+$(filter $(shell echo $(1) | tr A-Z a-z),yes on 1)
+endef
+
+define fv
 $(shell curl --silent "https://files.pikvm.org/repos/arch/$(BOARD)/latest/$(1)")
 endef
 
@@ -53,14 +58,14 @@ os: $(_BUILDER_DIR)
 		NC=$(NC) \
 		BUILD_OPTS=' $(BUILD_OPTS) \
 			--build-arg PLATFORM=$(PLATFORM) \
-			--build-arg USTREAMER_VERSION=$(call fetch_version,ustreamer) \
-			--build-arg KVMD_VERSION=$(call fetch_version,kvmd) \
-			--build-arg KVMD_WEBTERM_VERSION=$(call fetch_version,kvmd-webterm) \
+			--build-arg VERSIONS=$(call fv,ustreamer)/$(call fv,kvmd)/$(call fv,kvmd-webterm)/$(call fv,kvmd-oled)/$(call fv,kvmd-fan) \
+			--build-arg OLED=$(call optbool,$(OLED)) \
+			--build-arg FAN=$(call optbool,$(FAN)) \
 			--build-arg ROOT_PASSWD=$(ROOT_PASSWD) \
 			--build-arg WEBUI_ADMIN_PASSWD=$(WEBUI_ADMIN_PASSWD) \
 			--build-arg IPMI_ADMIN_PASSWD=$(IPMI_ADMIN_PASSWD) \
 		' \
-		PROJECT=pikvm-os-$(PLATFORM) \
+		PROJECT=pikvm-os-$(PLATFORM)$(SUFFIX) \
 		BOARD=$(BOARD) \
 		STAGES='$(STAGES)' \
 		HOSTNAME=$(HOSTNAME) \
@@ -101,8 +106,8 @@ clean-all:
 	- rmdir `dirname $(_BUILDER_DIR)`
 
 
-_IMAGE_DATED := $(PLATFORM)-$(BOARD)-$(shell date +%Y%m%d).img
-_IMAGE_LATEST := $(PLATFORM)-$(BOARD)-latest.img
+_IMAGE_DATED := $(PLATFORM)-$(BOARD)$(SUFFIX)-$(shell date +%Y%m%d).img
+_IMAGE_LATEST := $(PLATFORM)-$(BOARD)$(SUFFIX)-latest.img
 image:
 	which xz
 	mkdir -p images
