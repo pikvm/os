@@ -14,11 +14,7 @@ RUN echo $PLATFORM $VERSIONS
 
 RUN pacman --noconfirm --ask=4 -Syu \
 	&& case "$ARCH" in \
-		arm) \
-			case "$BOARD" in \
-				rpi|rpi2|rpi3|zero|zerow|zero2w) yes | pacman --needed -S pikvm-os-raspberrypi;; \
-				rpi4) yes | pacman -S pikvm-os-raspberrypi4;; \
-			esac;; \
+		arm) pacman --needed -S pikvm-os-raspberrypi;; \
 		aarch64) true;; \
 		*) echo "Unknown architecture: $ARCH"; exit 1;; \
 	esac \
@@ -34,7 +30,9 @@ RUN pkg-install \
 	wiringpi \
 	pastebinit \
 	dhclient \
-	tmate
+	tmate \
+	vi-vim-symlink \
+	nano-syntax-highlighting
 
 RUN systemctl enable kvmd \
 	&& systemctl enable kvmd-nginx \
@@ -49,6 +47,11 @@ RUN systemctl enable kvmd \
 	&& ([[ $PLATFORM != v3-hdmi ]] || systemctl enable kvmd-watchdog) \
 	&& ([[ -z "$OLED" ]] || systemctl enable kvmd-oled kvmd-oled-reboot kvmd-oled-shutdown) \
 	&& ([[ -z "$FAN" ]] || systemctl enable kvmd-fan)
+
+COPY stages/pikvm/nanorc /etc/skel/.nanorc
+RUN cp -a /etc/skel/.nanorc /root \
+	&& cp -a /etc/skel/.nanorc /home/kvmd-webterm \
+	&& chown kvmd-webterm:kvmd-webterm /home/kvmd-webterm/.nanorc
 
 COPY stages/pikvm/motd /etc/
 COPY stages/pikvm/issue /etc/

@@ -1,0 +1,4 @@
+include /usr/share/nano-syntax-highlighting/yaml.nanorc
+set linenumbers
+set tabsize 4
+set tabstospaces
