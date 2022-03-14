@@ -32,7 +32,8 @@ RUN pkg-install \
 	dhclient \
 	tmate \
 	vi-vim-symlink \
-	nano-syntax-highlighting
+	nano-syntax-highlighting \
+	hostapd
 
 RUN systemctl enable kvmd \
 	&& systemctl enable kvmd-nginx \
