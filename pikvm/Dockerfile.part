@@ -14,7 +14,7 @@ RUN echo $PLATFORM $VERSIONS
 
 RUN pacman --noconfirm --ask=4 -Syu \
 	&& case "$ARCH" in \
-		arm) pacman --needed -S pikvm-os-raspberrypi;; \
+		arm) pacman --noconfirm --ask=4 -S pikvm-os-raspberrypi;; \
 		aarch64) true;; \
 		*) echo "Unknown architecture: $ARCH"; exit 1;; \
 	esac \
