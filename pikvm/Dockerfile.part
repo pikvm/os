@@ -22,11 +22,13 @@ RUN pacman --noconfirm --ask=4 -Syu \
 	&& (mv /boot/cmdline.txt.pacsave /boot/cmdline.txt || true) \
 	&& rm -rf /var/cache/pacman/pkg/* /boot/*.pacnew
 
-RUN pkg-install \
+RUN pkg-install --assume-installed tessdata \
 	kvmd-platform-$PLATFORM-$BOARD \
 	kvmd-webterm \
 	kvmd-oled \
 	kvmd-fan \
+	tesseract \
+	tesseract-data-eng \
 	wiringpi \
 	pastebinit \
 	dhclient \
