@@ -88,7 +88,7 @@ install: $(_BUILDER_DIR)
 	$(MAKE) -C $(_BUILDER_DIR) install \
 		CARD=$(CARD) \
 		CARD_DATA_FS_TYPE=$(if $(findstring v2,$(PLATFORM))$(findstring v3,$(PLATFORM)),ext4,) \
-		CARD_DATA_FS_FLAGS=-m0 \
+		CARD_DATA_FS_FLAGS="-m0 -L PIMSD" \
 		CARD_DATA_BEGIN_AT=6400
 
 
