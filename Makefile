@@ -54,6 +54,7 @@ shell: $(_BUILDER_DIR)
 os: $(_BUILDER_DIR)
 	rm -rf $(_BUILDER_DIR)/stages/{pikvm,pikvm-otg-console}
 	cp -a pikvm pikvm-otg-console $(_BUILDER_DIR)/stages
+	cp -a disk-$(if $(findstring v2,$(PLATFORM))$(findstring v3,$(PLATFORM)),v2,v0).conf $(_BUILDER_DIR)/disk.conf
 	$(MAKE) -C $(_BUILDER_DIR) os \
 		NC=$(NC) \
 		BUILD_OPTS=' $(BUILD_OPTS) \
@@ -85,11 +86,7 @@ update: $(_BUILDER_DIR)
 
 
 install: $(_BUILDER_DIR)
-	$(MAKE) -C $(_BUILDER_DIR) install \
-		CARD=$(CARD) \
-		CARD_DATA_FS_TYPE=$(if $(findstring v2,$(PLATFORM))$(findstring v3,$(PLATFORM)),ext4,) \
-		CARD_DATA_FS_FLAGS="-m0 -L PIMSD" \
-		CARD_DATA_BEGIN_AT=6400
+	$(MAKE) -C $(_BUILDER_DIR) install CARD=$(CARD)
 
 
 scan: $(_BUILDER_DIR)
@@ -112,7 +109,7 @@ image:
 	which xz
 	mkdir -p images
 	sudo bash -x -c ' \
-		truncate images/$(_IMAGE_DATED) -s 6G \
+		truncate images/$(_IMAGE_DATED) -s 8G \
 		&& device=`losetup --find --show images/$(_IMAGE_DATED)` \
 		&& $(MAKE) install CARD=$$device \
 		&& losetup -d $$device \
