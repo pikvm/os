@@ -109,7 +109,7 @@ image:
 	which xz
 	mkdir -p images
 	sudo bash -x -c ' \
-		truncate images/$(_IMAGE_DATED) -s 8G \
+		truncate images/$(_IMAGE_DATED) -s 7G \
 		&& device=`losetup --find --show images/$(_IMAGE_DATED)` \
 		&& $(MAKE) install CARD=$$device \
 		&& losetup -d $$device \
