@@ -41,6 +41,7 @@ ENV PART_OPTS nodev,nosuid,noexec,ro,errors=remount-ro,data=journal
 RUN echo "LABEL=PIPST /var/lib/kvmd/pst  ext4  $PART_OPTS,X-kvmd.pst-user=kvmd-pst  0 0" >> /etc/fstab
 RUN systemctl enable kvmd-bootconfig \
 	&& systemctl enable kvmd \
+	&& systemctl enable kvmd-pst \
 	&& systemctl enable kvmd-nginx \
 	&& systemctl enable kvmd-webterm \
 	&& ([[ ! $PLATFORM =~ ^.*-hdmi$ ]] || systemctl enable kvmd-tc358743) \
