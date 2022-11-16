@@ -12,7 +12,11 @@ ENV FAN $FAN
 
 RUN echo $PLATFORM $VERSIONS
 
-RUN rm -f /usr/lib/firmware/brcm/brcmfmac43455-sdio.AW-CM256SM.txt
+RUN rm -f \
+	/usr/lib/firmware/brcm/brcmfmac43455-sdio.AW-CM256SM.txt \
+	/usr/lib/firmware/updates/brcm/brcmfmac{43455,43430}-sdio.clm_blob \
+	/usr/lib/firmware/updates/cypress/cyfmac{43455,43430}-sdio.clm_blob \
+	/usr/lib/firmware/cypress/cyfmac{43455,43430}-sdio.clm_blob
 
 RUN pacman --noconfirm --ask=4 -Syu \
 	&& case "$ARCH" in \
