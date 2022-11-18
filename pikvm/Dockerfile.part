@@ -75,8 +75,6 @@ RUN sed -i -f /usr/share/kvmd/configs.default/os/cmdline/$PLATFORM-$BOARD.sed /b
 RUN sed -i -e '/\<pam_systemd\.so\>/ s/^#*/#/' /etc/pam.d/system-login \
 	&& sed -i -e '/\<pam_systemd_home\.so\>/ s/^#*/#/' /etc/pam.d/system-auth
 
-ADD stages/pikvm/eth0.network /etc/systemd/network/eth0.network
-
 ARG ROOT_PASSWD
 ENV ROOT_PASSWD $ROOT_PASSWD
 RUN echo "root:$ROOT_PASSWD" | chpasswd \
