@@ -1,0 +1,12 @@
+name: v4mini-hdmi-rpi4
+on: workflow_dispatch
+
+
+jobs:
+  os:
+    uses: pikvm/os/.github/workflows/os.yml@master
+    with:
+      BOARD: rpi4
+      PLATFORM: v4mini-hdmi
+    secrets:
+      DEPLOY_KEY: "${{secrets.DEPLOY_KEY}}"
