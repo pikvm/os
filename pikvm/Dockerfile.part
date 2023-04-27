@@ -35,7 +35,8 @@ RUN pkg-install --assume-installed tessdata \
 	tmate \
 	vi-vim-symlink \
 	nano-syntax-highlighting \
-	hostapd
+	hostapd \
+	edid-decode
 
 ENV PART_OPTS nodev,nosuid,noexec,ro,errors=remount-ro,data=journal
 RUN echo "LABEL=PIPST /var/lib/kvmd/pst  ext4  $PART_OPTS,X-kvmd.pst-user=kvmd-pst  0 0" >> /etc/fstab
