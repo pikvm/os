@@ -23,20 +23,21 @@ RUN pacman --noconfirm --ask=4 -Syu \
 	&& rm -rf /var/cache/pacman/pkg/* /boot/*.pacnew
 
 RUN pkg-install --assume-installed tessdata \
-	kvmd-platform-$PLATFORM-$BOARD \
-	kvmd-webterm \
-	kvmd-oled \
-	kvmd-fan \
-	tesseract \
-	tesseract-data-eng \
-	wiringpi \
-	pastebinit \
-	dhclient \
-	tmate \
-	vi-vim-symlink \
-	nano-syntax-highlighting \
-	hostapd \
-	edid-decode
+		kvmd-platform-$PLATFORM-$BOARD \
+		kvmd-webterm \
+		kvmd-oled \
+		kvmd-fan \
+		tesseract \
+		tesseract-data-eng \
+		wiringpi \
+		pastebinit \
+		dhclient \
+		tmate \
+		vi-vim-symlink \
+		nano-syntax-highlighting \
+		hostapd \
+		edid-decode \
+	&& if [[ $PLATFORM =~ ^v4.*$ ]]; then pkg-install flashrom-pikvm; fi
 
 ENV PART_OPTS nodev,nosuid,noexec,ro,errors=remount-ro
 RUN echo "LABEL=PIPST /var/lib/kvmd/pst  ext4  $PART_OPTS,X-kvmd.pst-user=kvmd-pst  0 2" >> /etc/fstab
