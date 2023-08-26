@@ -1,0 +1,12 @@
+name: v1-hdmiusb-rpi3
+on: workflow_dispatch
+
+
+jobs:
+  os:
+    uses: pikvm/os/.github/workflows/os.yml@master
+    with:
+      BOARD: rpi3
+      PLATFORM: v1-hdmiusb
+    secrets:
+      DEPLOY_KEY: "${{secrets.DEPLOY_KEY}}"
