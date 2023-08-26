@@ -54,6 +54,7 @@ RUN systemctl enable kvmd-bootconfig \
 		\
 	; fi \
 	&& if [[ $BOARD =~ ^rpi4|zero2w$ && $PLATFORM =~ ^v[234].*-hdmi$ ]]; then systemctl enable kvmd-janus; fi \
+	&& if [[ $BOARD =~ ^rpi3$ && $PLATFORM =~ ^v[1].*-hdmi$ ]]; then systemctl enable kvmd-janus; fi \
 	&& if [[ $PLATFORM =~ ^v[34].*$ ]]; then systemctl enable kvmd-watchdog; fi \
 	&& if [[ -n "$OLED" || $PLATFORM =~ ^v4.*$ ]]; then systemctl enable kvmd-oled kvmd-oled-reboot kvmd-oled-shutdown; fi \
 	&& if [[ -n "$FAN" || $PLATFORM == v4plus-hdmi ]]; then systemctl enable kvmd-fan; fi

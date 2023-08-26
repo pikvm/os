@@ -56,7 +56,7 @@ shell: $(_BUILDER_DIR)
 os: $(_BUILDER_DIR)
 	rm -rf $(_BUILDER_DIR)/stages/{pikvm,pikvm-otg-console}
 	cp -a pikvm pikvm-otg-console $(_BUILDER_DIR)/stages
-	cp -a disk-$(if $(findstring v2,$(PLATFORM))$(findstring v3,$(PLATFORM))$(findstring v4,$(PLATFORM)),v2,v0).conf $(_BUILDER_DIR)/disk.conf
+	cp -a disk-$(if $(findstring v2,$(PLATFORM))$(findstring v3,$(PLATFORM))$(findstring v4,$(PLATFORM)),v2,v1,v0).conf $(_BUILDER_DIR)/disk.conf
 	$(MAKE) -C $(_BUILDER_DIR) os \
 		NC=$(NC) \
 		BUILD_OPTS=' $(BUILD_OPTS) \
