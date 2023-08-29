@@ -42,6 +42,7 @@ jobs:
 
       - name: Configuring SSH
         run: |
+          test -n "$DEPLOY_KEY"
           mkdir ~/.ssh
           chmod 700 ~/.ssh
           ssh-keyscan -H files.pikvm.org > ~/.ssh/known_hosts
@@ -61,7 +62,7 @@ jobs:
         run: make os NC=1
 
       - name: Making image
-        run: make image ZIP=1
+        run: make image
 
       - name: Uploading image
         run: make upload
