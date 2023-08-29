@@ -57,7 +57,7 @@ shell: $(_BUILDER_DIR)
 os: $(_BUILDER_DIR)
 	rm -rf $(_BUILDER_DIR)/stages/arch/{pikvm,pikvm-otg-console}
 	cp -a stages/arch/{pikvm,pikvm-otg-console} $(_BUILDER_DIR)/stages/arch
-	cp -L disk/$(PLATFORM).conf $(_BUILDER_DIR)/disk.conf
+	cp -L disk/$(word 1,$(subst -, ,$(PLATFORM))).conf $(_BUILDER_DIR)/disk.conf
 	$(MAKE) -C $(_BUILDER_DIR) os \
 		BUILD_OPTS=' $(BUILD_OPTS) \
 			--build-arg PLATFORM=$(PLATFORM) \
