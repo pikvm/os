@@ -5,6 +5,7 @@ SUFFIX ?=
 export BOARD ?= rpi4
 export PROJECT ?= pikvm-os.$(PLATFORM)$(SUFFIX)
 export STAGES ?= __init__ os pikvm-repo watchdog rootdelay ro no-audit pikvm __cleanup__
+export NC ?=
 
 export HOSTNAME ?= pikvm
 export LOCALE ?= en_US
@@ -58,7 +59,6 @@ os: $(_BUILDER_DIR)
 	cp -a pikvm pikvm-otg-console $(_BUILDER_DIR)/stages/arch
 	cp -a disk-$(if $(findstring v2,$(PLATFORM))$(findstring v3,$(PLATFORM))$(findstring v4,$(PLATFORM)),v2,v0).conf $(_BUILDER_DIR)/disk.conf
 	$(MAKE) -C $(_BUILDER_DIR) os \
-		NC=$(NC) \
 		BUILD_OPTS=' $(BUILD_OPTS) \
 			--build-arg PLATFORM=$(PLATFORM) \
 			--build-arg VERSIONS=$(call fv,ustreamer)/$(call fv,kvmd)/$(call fv,kvmd-webterm)/$(call fv,kvmd-oled)/$(call fv,kvmd-fan) \
