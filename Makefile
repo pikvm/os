@@ -17,8 +17,6 @@ ROOT_PASSWD ?= root
 WEBUI_ADMIN_PASSWD ?= admin
 IPMI_ADMIN_PASSWD ?= admin
 
-SUDO ?= sudo
-
 export CARD ?= /dev/mmcblk0
 
 DEPLOY_USER ?= root
@@ -84,6 +82,15 @@ install: $(_BUILDER_DIR)
 	$(MAKE) -C $(_BUILDER_DIR) install
 
 
+image: $(_BUILDER_DIR)
+	$(eval _dated := $(PLATFORM)-$(BOARD)$(SUFFIX)-$(shell date +%Y%m%d).img)
+	$(eval _latest := $(PLATFORM)-$(BOARD)$(SUFFIX)-latest.img)
+	mkdir -p images
+	$(MAKE) -C $(_BUILDER_DIR) image IMAGE=images/$(_dated) IMAGE_XZ=1
+	cd images && ln -sf $(_dated).xz $(_latest).xz
+	cd images && ln -sf $(_dated).xz.sha1 $(_latest).xz.sha1
+
+
 scan: $(_BUILDER_DIR)
 	$(MAKE) -C $(_BUILDER_DIR) scan
 
@@ -96,24 +103,6 @@ clean-all:
 	- $(MAKE) -C $(_BUILDER_DIR) clean-all
 	rm -rf $(_BUILDER_DIR)
 	- rmdir `dirname $(_BUILDER_DIR)`
-
-
-_IMAGE_DATED := $(PLATFORM)-$(BOARD)$(SUFFIX)-$(shell date +%Y%m%d).img
-_IMAGE_LATEST := $(PLATFORM)-$(BOARD)$(SUFFIX)-latest.img
-image:
-	which xz
-	mkdir -p images
-	$(SUDO) bash -x -c ' \
-		truncate images/$(_IMAGE_DATED) -s 7G \
-		&& device=`losetup --find --show images/$(_IMAGE_DATED)` \
-		&& $(MAKE) install CARD=$$device \
-		&& losetup -d $$device \
-	'
-	$(SUDO) chown $(shell id -u):$(shell id -g) images/$(_IMAGE_DATED)
-	xz -9 --compress images/$(_IMAGE_DATED)
-	sha1sum images/$(_IMAGE_DATED).xz | awk '{print $$1}' > images/$(_IMAGE_DATED).xz.sha1
-	cd images && ln -sf $(_IMAGE_DATED).xz $(_IMAGE_LATEST).xz
-	cd images && ln -sf $(_IMAGE_DATED).xz.sha1 $(_IMAGE_LATEST).xz.sha1
 
 
 upload:
