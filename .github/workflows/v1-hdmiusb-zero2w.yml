@@ -1,0 +1,12 @@
+name: v1-hdmiusb-zero2w
+on: workflow_dispatch
+
+
+jobs:
+  os:
+    uses: pikvm/os/.github/workflows/os.yml@master
+    with:
+      BOARD: zero2w
+      PLATFORM: v1-hdmiusb
+    secrets:
+      DEPLOY_KEY: "${{secrets.DEPLOY_KEY}}"
