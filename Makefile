@@ -86,7 +86,7 @@ image: $(_BUILDER_DIR)
 	$(eval _dated := $(PLATFORM)-$(BOARD)$(SUFFIX)-$(shell date +%Y%m%d).img)
 	$(eval _latest := $(PLATFORM)-$(BOARD)$(SUFFIX)-latest.img)
 	mkdir -p images
-	$(MAKE) -C $(_BUILDER_DIR) image IMAGE=images/$(_dated) IMAGE_XZ=1
+	$(MAKE) -C $(_BUILDER_DIR) image IMAGE=$(shell pwd)/images/$(_dated) IMAGE_XZ=1
 	cd images && ln -sf $(_dated).xz $(_latest).xz
 	cd images && ln -sf $(_dated).xz.sha1 $(_latest).xz.sha1
 
