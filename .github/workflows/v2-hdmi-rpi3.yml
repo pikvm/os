@@ -1,0 +1,12 @@
+name: v2-hdmi-rpi3
+on: workflow_dispatch
+
+
+jobs:
+  os:
+    uses: pikvm/os/.github/workflows/os.yml@master
+    with:
+      BOARD: rpi3
+      PLATFORM: v2-hdmi
+    secrets:
+      DEPLOY_KEY: "${{secrets.DEPLOY_KEY}}"
