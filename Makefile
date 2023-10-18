@@ -17,7 +17,7 @@ ROOT_PASSWD ?= root
 WEBUI_ADMIN_PASSWD ?= admin
 IPMI_ADMIN_PASSWD ?= admin
 
-export CARD ?= /dev/mmcblk0
+export CARD ?= /dev/null
 
 DEPLOY_USER ?= root
 
