@@ -62,7 +62,7 @@ jobs:
         run: make os NC=1
 
       - name: Making image
-        run: make image
+        run: make image IMAGE_XZ=1
 
       - name: Uploading image
         run: make upload

@@ -18,6 +18,7 @@ WEBUI_ADMIN_PASSWD ?= admin
 IPMI_ADMIN_PASSWD ?= admin
 
 export CARD ?= /dev/null
+export IMAGE_XZ ?=
 
 DEPLOY_USER ?= root
 
@@ -85,10 +86,11 @@ install: $(_BUILDER_DIR)
 image: $(_BUILDER_DIR)
 	$(eval _dated := $(PLATFORM)-$(BOARD)$(SUFFIX)-$(shell date +%Y%m%d).img)
 	$(eval _latest := $(PLATFORM)-$(BOARD)$(SUFFIX)-latest.img)
+	$(eval _suffix = $(if $(call optbool,$(IMAGE_XZ)),.xz,))
 	mkdir -p images
-	$(MAKE) -C $(_BUILDER_DIR) image IMAGE=$(shell pwd)/images/$(_dated) IMAGE_XZ=1
-	cd images && ln -sf $(_dated).xz $(_latest).xz
-	cd images && ln -sf $(_dated).xz.sha1 $(_latest).xz.sha1
+	$(MAKE) -C $(_BUILDER_DIR) image IMAGE=$(shell pwd)/images/$(_dated)
+	cd images && ln -sf $(_dated)$(_suffix) $(_latest)$(_suffix)
+	cd images && ln -sf $(_dated)$(_suffix).sha1 $(_latest)$(_suffix).sha1
 
 
 scan: $(_BUILDER_DIR)
