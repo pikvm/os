@@ -10,7 +10,7 @@ export NC ?=
 export HOSTNAME ?= pikvm
 export LOCALE ?= en_US
 export TIMEZONE ?= Europe/Moscow
-export REPO_URL ?= http://de3.mirror.archlinuxarm.org
+export ARCH_DIST_REPO_URL ?= http://de3.mirror.archlinuxarm.org
 BUILD_OPTS ?=
 
 ROOT_PASSWD ?= root
