@@ -17,6 +17,7 @@ ROOT_PASSWD ?= root
 WEBUI_ADMIN_PASSWD ?= admin
 IPMI_ADMIN_PASSWD ?= admin
 
+export DISK ?= $(shell pwd)/disk/$(word 1,$(subst -, ,$(PLATFORM))).conf
 export CARD ?= /dev/null
 export IMAGE_XZ ?=
 
@@ -56,7 +57,6 @@ shell: $(_BUILDER_DIR)
 os: $(_BUILDER_DIR)
 	rm -rf $(_BUILDER_DIR)/stages/arch/{pikvm,pikvm-otg-console}
 	cp -a stages/arch/{pikvm,pikvm-otg-console} $(_BUILDER_DIR)/stages/arch
-	cp -L disk/$(word 1,$(subst -, ,$(PLATFORM))).conf $(_BUILDER_DIR)/disk.conf
 	$(MAKE) -C $(_BUILDER_DIR) os \
 		BUILD_OPTS=' $(BUILD_OPTS) \
 			--build-arg PLATFORM=$(PLATFORM) \
