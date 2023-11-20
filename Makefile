@@ -4,12 +4,12 @@ PLATFORM ?= v2-hdmi
 SUFFIX ?=
 export BOARD ?= rpi4
 export PROJECT ?= pikvm-os.$(PLATFORM)$(SUFFIX)
-export STAGES ?= __init__ os pikvm-repo watchdog rootdelay ro no-audit pikvm __cleanup__
+export STAGES ?= __init__ os pikvm-repo watchdog rootdelay ro pikvm __cleanup__
 export NC ?=
 
 export HOSTNAME ?= pikvm
 export LOCALE ?= en_US
-export TIMEZONE ?= Europe/Moscow
+export TIMEZONE ?= UTC
 export ARCH_DIST_REPO_URL ?= http://de3.mirror.archlinuxarm.org
 BUILD_OPTS ?=
 

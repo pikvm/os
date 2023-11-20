@@ -13,11 +13,7 @@ ENV FAN $FAN
 RUN echo $PLATFORM $VERSIONS
 
 RUN pacman --noconfirm --ask=4 -Syu \
-	&& case "$ARCH" in \
-		arm) pacman --noconfirm --ask=4 -S pikvm-os-raspberrypi;; \
-		aarch64) true;; \
-		*) echo "Unknown architecture: $ARCH"; exit 1;; \
-	esac \
+	&& pacman --noconfirm --ask=4 -S pikvm-os-raspberrypi \
 	&& (mv /boot/config.txt.pacsave /boot/config.txt || true) \
 	&& (mv /boot/cmdline.txt.pacsave /boot/cmdline.txt || true) \
 	&& rm -rf /var/cache/pacman/pkg/* /boot/*.pacnew
@@ -31,7 +27,6 @@ RUN pkg-install --assume-installed tessdata \
 		tesseract-data-eng \
 		wiringpi \
 		pastebinit \
-		dhclient \
 		tmate \
 		vi-vim-symlink \
 		nano-syntax-highlighting \
@@ -85,6 +80,6 @@ ENV IPMI_ADMIN_PASSWD $IPMI_ADMIN_PASSWD
 RUN sed -i "\$d" /etc/kvmd/ipmipasswd \
 	&& echo "admin:$IPMI_ADMIN_PASSWD -> admin:$WEBUI_ADMIN_PASSWD" >> /etc/kvmd/ipmipasswd
 
-RUN rm -f /etc/ssh/ssh_host_* /etc/kvmd/nginx/ssl/* /etc/kvmd/vnc/ssl/*
+RUN rm -f /etc/ssh/ssh_host_*_key* /etc/kvmd/nginx/ssl/* /etc/kvmd/vnc/ssl/*
 
 RUN echo "FIRST_BOOT=1" > /boot/pikvm.txt
