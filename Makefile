@@ -4,7 +4,7 @@ PLATFORM ?= v2-hdmi
 SUFFIX ?=
 export BOARD ?= rpi4
 export PROJECT ?= pikvm-os.$(PLATFORM)$(SUFFIX)
-export STAGES ?= __init__ os pikvm-repo watchdog rootdelay ro pikvm __cleanup__
+export STAGES ?= __init__ os pikvm-repo pistat watchdog rootdelay ro pikvm __cleanup__
 export NC ?=
 
 export HOSTNAME ?= pikvm
