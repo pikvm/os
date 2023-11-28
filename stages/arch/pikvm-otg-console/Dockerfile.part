@@ -5,4 +5,4 @@ RUN echo ttyGS0 >> /etc/securetty
 RUN mkdir /etc/systemd/system/getty@ttyGS0.service.d
 COPY stages/pikvm-otg-console/ttyGS0.override /etc/systemd/system/getty@ttyGS0.service.d/override.conf
 
-COPY stages/pikvm-otg-console/kvmd.yaml /etc/kvmd/override.d/otg-console.yaml
+COPY stages/pikvm-otg-console/0000-vendor-otg-serial.yaml /etc/kvmd/override.d/
