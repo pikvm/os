@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 jobs:
   os:
-    uses: pikvm/os/.github/workflows/os.yml@master
+    uses: pikvm/os/.github/workflows/os.yml@test_myimage
     with:
       BOARD: rpi4
       PLATFORM: v2-hdmi
