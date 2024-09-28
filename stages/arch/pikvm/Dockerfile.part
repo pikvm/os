@@ -21,7 +21,6 @@ RUN pacman --noconfirm --ask=4 -Syu \
 RUN pkg-install --assume-installed tessdata \
 		kvmd-platform-$PLATFORM-$BOARD \
 		kvmd-webterm \
-		kvmd-oled \
 		kvmd-fan \
 		tesseract \
 		tesseract-data-eng \
