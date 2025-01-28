@@ -3,6 +3,7 @@
 PLATFORM ?= v2-hdmi
 SUFFIX ?=
 export BOARD ?= rpi4
+export ARCH ?= arm
 export PROJECT ?= pikvm-os.$(PLATFORM)$(SUFFIX)
 export STAGES ?= __init__ os pikvm-repo pistat watchdog rootdelay ro pikvm restore-mirrorlist __cleanup__
 export NC ?=
@@ -26,14 +27,14 @@ DEPLOY_USER ?= root
 
 # =====
 SHELL = /usr/bin/env bash
-_BUILDER_DIR = ./.pi-builder/$(PLATFORM)-$(BOARD)$(SUFFIX)
+_BUILDER_DIR = ./.pi-builder/$(PLATFORM)-$(BOARD)-$(ARCH)$(SUFFIX)
 
 define optbool
 $(filter $(shell echo $(1) | tr A-Z a-z),yes on 1)
 endef
 
 define fv
-$(shell curl --silent "https://files.pikvm.org/repos/arch/$(BOARD)/latest/$(1)")
+$(shell curl --silent "https://files.pikvm.org/repos/arch/$(BOARD)-$(ARCH)/latest/$(1)")
 endef
 
 
@@ -84,8 +85,8 @@ install: $(_BUILDER_DIR)
 
 
 image: $(_BUILDER_DIR)
-	$(eval _dated := $(PLATFORM)-$(BOARD)$(SUFFIX)-$(shell date +%Y%m%d).img)
-	$(eval _latest := $(PLATFORM)-$(BOARD)$(SUFFIX)-latest.img)
+	$(eval _dated := $(PLATFORM)-$(BOARD)-$(ARCH)$(SUFFIX)-$(shell date +%Y%m%d).img)
+	$(eval _latest := $(PLATFORM)-$(BOARD)-$(ARCH)$(SUFFIX)-latest.img)
 	$(eval _suffix = $(if $(call optbool,$(IMAGE_XZ)),.xz,))
 	mkdir -p images
 	$(MAKE) -C $(_BUILDER_DIR) image IMAGE=$(shell pwd)/images/$(_dated)
