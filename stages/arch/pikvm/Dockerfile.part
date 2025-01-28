@@ -1,14 +1,14 @@
 ARG PLATFORM
-ENV PLATFORM $PLATFORM
+ENV PLATFORM=$PLATFORM
 
 ARG VERSIONS
-ENV VERSIONS $VERSIONS
+ENV VERSIONS=$VERSIONS
 
 ARG OLED
-ENV OLED $OLED
+ENV OLED=$OLED
 
 ARG FAN
-ENV FAN $FAN
+ENV FAN=$FAN
 
 RUN echo $PLATFORM $VERSIONS
 
@@ -34,7 +34,7 @@ RUN pkg-install --assume-installed tessdata \
 		edid-decode \
 	&& if [[ $PLATFORM =~ ^v4.*$ ]]; then pkg-install flashrom-pikvm; fi
 
-ENV PART_OPTS nodev,nosuid,noexec,ro,errors=remount-ro
+ENV PART_OPTS=nodev,nosuid,noexec,ro,errors=remount-ro
 RUN echo "LABEL=PIPST  /var/lib/kvmd/pst  ext4  $PART_OPTS,X-kvmd.pst-user=kvmd-pst  0 2" >> /etc/fstab
 RUN systemctl enable kvmd-bootconfig \
 	&& systemctl enable kvmd \
@@ -65,17 +65,17 @@ RUN sed -i -f /usr/share/kvmd/configs.default/os/cmdline/$PLATFORM-$BOARD.sed /b
 	&& cp /usr/share/kvmd/configs.default/os/boot-config/$PLATFORM-$BOARD.txt /boot/config.txt
 
 ARG ROOT_PASSWD
-ENV ROOT_PASSWD $ROOT_PASSWD
+ENV ROOT_PASSWD=$ROOT_PASSWD
 RUN echo "root:$ROOT_PASSWD" | chpasswd \
 	&& echo "PermitRootLogin yes" >> /etc/ssh/sshd_config \
 	&& userdel -r -f alarm
 
 ARG WEBUI_ADMIN_PASSWD
-ENV WEBUI_ADMIN_PASSWD $WEBUI_ADMIN_PASSWD
+ENV WEBUI_ADMIN_PASSWD=$WEBUI_ADMIN_PASSWD
 RUN echo "$WEBUI_ADMIN_PASSWD" | kvmd-htpasswd set --read-stdin admin
 
 ARG IPMI_ADMIN_PASSWD
-ENV IPMI_ADMIN_PASSWD $IPMI_ADMIN_PASSWD
+ENV IPMI_ADMIN_PASSWD=$IPMI_ADMIN_PASSWD
 RUN sed -i "\$d" /etc/kvmd/ipmipasswd \
 	&& echo "admin:$IPMI_ADMIN_PASSWD -> admin:$WEBUI_ADMIN_PASSWD" >> /etc/kvmd/ipmipasswd
 
