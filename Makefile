@@ -85,13 +85,14 @@ install: $(_BUILDER_DIR)
 
 
 image: $(_BUILDER_DIR)
+	$(eval _dir := images/$(PLATFORM)-$(BOARD)/$(ARCH))
 	$(eval _dated := $(PLATFORM)-$(BOARD)-$(ARCH)$(SUFFIX)-$(shell date +%Y%m%d).img)
 	$(eval _latest := $(PLATFORM)-$(BOARD)-$(ARCH)$(SUFFIX)-latest.img)
 	$(eval _suffix = $(if $(call optbool,$(IMAGE_XZ)),.xz,))
-	mkdir -p images
-	$(MAKE) -C $(_BUILDER_DIR) image IMAGE=$(shell pwd)/images/$(_dated)
-	cd images && ln -sf $(_dated)$(_suffix) $(_latest)$(_suffix)
-	cd images && ln -sf $(_dated)$(_suffix).sha1 $(_latest)$(_suffix).sha1
+	mkdir -p $(_dir)
+	$(MAKE) -C $(_BUILDER_DIR) image IMAGE=$(shell pwd)/$(_dir)/$(_dated)
+	cd $(_dir) && ln -sf $(_dated)$(_suffix) $(_latest)$(_suffix)
+	cd $(_dir) && ln -sf $(_dated)$(_suffix).sha1 $(_latest)$(_suffix).sha1
 
 
 scan: $(_BUILDER_DIR)
@@ -109,4 +110,6 @@ clean-all:
 
 
 upload:
-	rsync -rl --progress images/ $(DEPLOY_USER)@files.pikvm.org:/var/www/files.pikvm.org/images
+	rsync -rl --progress \
+		images/ \
+		$(DEPLOY_USER)@files.pikvm.org:/var/www/files.pikvm.org/images
