@@ -31,7 +31,6 @@ RUN pkg-install --assume-installed tessdata \
 		nano-syntax-highlighting \
 		avahi \
 		hostapd \
-		edid-decode \
 	&& if [[ $PLATFORM =~ ^v4.*$ ]]; then pkg-install flashrom-pikvm; fi
 
 ENV PART_OPTS=nodev,nosuid,noexec,ro,errors=remount-ro
