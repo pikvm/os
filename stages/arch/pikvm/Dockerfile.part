@@ -29,6 +29,7 @@ RUN pkg-install --assume-installed tessdata \
 		tmate \
 		vi-vim-symlink \
 		nano-syntax-highlighting \
+		pwgen \
 		avahi \
 		hostapd \
 	&& if [[ $PLATFORM =~ ^v4.*$ ]]; then pkg-install flashrom-pikvm; fi
