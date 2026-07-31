@@ -22,12 +22,15 @@ export DISK ?= $(shell pwd)/disk/$(word 1,$(subst -, ,$(PLATFORM))).conf
 export CARD ?= /dev/null
 export IMAGE_XZ ?=
 
-DEPLOY_USER ?= root
+UPLOAD_USER ?= root
+UPLOAD_TARGET ?= files.pikvm.org:/var/www/files.pikvm.org/images
+
+BUILD_DIR ?= ./.pi-builder
 
 
 # =====
-SHELL = /usr/bin/env bash
-_BUILDER_DIR = ./.pi-builder/$(PLATFORM)-$(BOARD)-$(ARCH)$(SUFFIX)
+SHELL := bash
+.SHELLFLAGS := -Eeuo pipefail -c
 
 define optbool
 $(filter $(shell echo $(1) | tr A-Z a-z),yes on 1)
@@ -51,14 +54,14 @@ all:
 	@ echo "    make clean-all      # Remove the generated rootfs and pi-builder toolchain"
 
 
-shell: $(_BUILDER_DIR)
-	$(MAKE) -C $(_BUILDER_DIR) shell
+shell: $(BUILD_DIR)
+	$(MAKE) -C $(BUILD_DIR) shell
 
 
-os: $(_BUILDER_DIR)
-	rm -rf $(_BUILDER_DIR)/stages/arch/{pikvm,pikvm-otg-console}
-	cp -a stages/arch/{pikvm,pikvm-otg-console} $(_BUILDER_DIR)/stages/arch
-	$(MAKE) -C $(_BUILDER_DIR) os \
+os: $(BUILD_DIR)
+	rm -rf $(BUILD_DIR)/stages/arch/{pikvm,pikvm-otg-console}
+	cp -a stages/arch/{pikvm,pikvm-otg-console} $(BUILD_DIR)/stages/arch
+	$(MAKE) -C $(BUILD_DIR) os \
 		BUILD_OPTS=' $(BUILD_OPTS) \
 			--build-arg PLATFORM=$(PLATFORM) \
 			--build-arg OLED=$(call optbool,$(OLED)) \
@@ -70,46 +73,21 @@ os: $(_BUILDER_DIR)
 		'
 
 
-$(_BUILDER_DIR):
-	mkdir -p `dirname $(_BUILDER_DIR)`
-	git clone --depth=1 https://github.com/mdevaev/pi-builder $(_BUILDER_DIR)
+$(BUILD_DIR):
+	mkdir -p `dirname $(BUILD_DIR)`
+	git clone --depth=1 https://github.com/mdevaev/pi-builder $(BUILD_DIR)
 
 
-update: $(_BUILDER_DIR)
-	cd $(_BUILDER_DIR) && git pull --rebase
-	git pull --rebase
-
-
-install: $(_BUILDER_DIR)
-	$(MAKE) -C $(_BUILDER_DIR) install
-
-
-image: $(_BUILDER_DIR)
+image: $(BUILD_DIR)
 	$(eval _dir := images/$(PLATFORM)-$(BOARD)/$(ARCH))
 	$(eval _dated := $(PLATFORM)-$(BOARD)-$(ARCH)$(SUFFIX)-$(shell date +%Y%m%d).img)
 	$(eval _latest := $(PLATFORM)-$(BOARD)-$(ARCH)$(SUFFIX)-latest.img)
 	$(eval _suffix = $(if $(call optbool,$(IMAGE_XZ)),.xz,))
 	mkdir -p $(_dir)
-	$(MAKE) -C $(_BUILDER_DIR) image IMAGE=$(shell pwd)/$(_dir)/$(_dated)
+	$(MAKE) -C $(BUILD_DIR) image IMAGE=$(shell pwd)/$(_dir)/$(_dated)
 	cd $(_dir) && ln -sf $(_dated)$(_suffix) $(_latest)$(_suffix)
 	cd $(_dir) && ln -sf $(_dated)$(_suffix).sha1 $(_latest)$(_suffix).sha1
 
 
-scan: $(_BUILDER_DIR)
-	$(MAKE) -C $(_BUILDER_DIR) scan
-
-
-clean: $(_BUILDER_DIR)
-	$(MAKE) -C $(_BUILDER_DIR) clean
-
-
-clean-all:
-	- $(MAKE) -C $(_BUILDER_DIR) clean-all
-	rm -rf $(_BUILDER_DIR)
-	- rmdir `dirname $(_BUILDER_DIR)`
-
-
 upload:
-	rsync -rl --progress \
-		images/ \
-		$(DEPLOY_USER)@files.pikvm.org:/var/www/files.pikvm.org/images
+	rsync -rl --progress images/ $(UPLOAD_USER)@$(UPLOAD_TARGET)

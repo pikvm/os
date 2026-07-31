@@ -1,3 +1,5 @@
 /.pi-builder/
+/build/
 /images/
+/.all_targets.mk
 /config.mk
