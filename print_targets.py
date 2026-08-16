@@ -15,6 +15,7 @@ _TARGETS = [
     {"PLATFORM": "v2-hdmi",     "BOARD": "zero2w", "ARCH": "arm"},
     {"PLATFORM": "v2-hdmiusb",  "BOARD": "rpi4",   "ARCH": "aarch64"},
     {"PLATFORM": "v2-hdmiusb",  "BOARD": "rpi4",   "ARCH": "arm"},
+    {"PLATFORM": "v2-hdmiusb",  "BOARD": "rpi5",   "ARCH": "aarch64"},
     {"PLATFORM": "v3-hdmi",     "BOARD": "rpi4",   "ARCH": "aarch64"},
     {"PLATFORM": "v3-hdmi",     "BOARD": "rpi4",   "ARCH": "aarch64", "FAN": "1", "OLED": "1", "SUFFIX": "-box"},
     {"PLATFORM": "v3-hdmi",     "BOARD": "rpi4",   "ARCH": "arm"},
