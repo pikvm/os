@@ -48,7 +48,7 @@ RUN systemctl enable kvmd-bootconfig \
 	&& if [[ $PLATFORM =~ ^.*-hdmi$ ]]; then systemctl enable kvmd-tc358743 kvmd-pm; fi \
 	&& if [[ $PLATFORM =~ ^v0.*$ ]]; then systemctl mask serial-getty@ttyAMA0.service; fi \
 	&& if [[ $PLATFORM =~ ^v[234].*$ ]]; then \
-		systemctl enable kvmd-otg \
+		systemctl enable kvmd-otg kvmd-nbd \
 		&& echo "LABEL=PIMSD  /var/lib/kvmd/msd  ext4  $PART_OPTS,X-kvmd.otgmsd-user=kvmd  0 2" >> /etc/fstab \
 	; fi \
 	&& if [[ $BOARD =~ ^rpi4|zero2w$ && $PLATFORM =~ ^v[234].*-hdmi$ ]]; then systemctl enable kvmd-janus kvmd-media kvmd-pm; fi \
